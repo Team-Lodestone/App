@@ -6,6 +6,9 @@ const config = {
   preprocess: [vitePreprocess()],
   kit: {
     adapter: staticAdapter(),
+    paths: {
+      base: "/App"
+    }
   },
 };
 

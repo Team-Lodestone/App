@@ -1,5 +1,5 @@
 [package]
-name = "minecraft-manipulator"
+name = "project-lodestone"
 version = "0.0.0"
 description = "A Tauri App"
 authors = ["you"]

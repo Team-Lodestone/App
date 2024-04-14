@@ -1,6 +1,6 @@
 # App
 
-Web UI frontend for Minecraft-Manipulator
+Web UI frontend for Project Lodestone
 
 ## Recommended IDE Setup
 

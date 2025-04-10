@@ -26,6 +26,30 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: (libLCE) Set up Emscripten
+        run: |
+          ./deps/libLCE/external/emsdk/emsdk install latest
+          ./deps/libLCE/external/emsdk/emsdk activate latest
+          source ./deps/libLCE/external/emsdk/emsdk_env.sh
+
+      - name: (libLCE) Configure CMake
+        run: >
+          cmake -B /home/runner/work/App/App/deps/libLCE/em-build
+          -S /home/runner/work/App/App/deps/libLCE/
+          -DCMAKE_CXX_COMPILER=em++
+          -DCMAKE_C_COMPILER=emcc
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_EXE_LINKER_FLAGS="--bind"
+          -DEMSCRIPTEN_DIR="$/home/runner/work/App/App/deps/libLCE/external/emsdk/upstream/emscripten"
+          -DCMAKE_TOOLCHAIN_FILE=/home/runner/work/App/App/deps/libLCE/external/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+
+      - name: (libLCE) Copy built WASM files
+        run: |
+          cp /home/runner/work/App/App/deps/libLCE/em-build/*.wasm /home/runner/work/App/App/src/wasm
+          cp /home/runner/work/App/App/deps/libLCE/em-build/*.js /home/runner/work/App/App/src/wasm
 
       - name: Install dependencies
         run: npm i

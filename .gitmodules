@@ -1,0 +1,3 @@
+[submodule "deps/libLCE"]
+	path = deps/libLCE
+	url = https://github.com/DexrnZacAttack/libLCE

@@ -9,3 +9,4 @@ out
 /build
 src/wasm/libLCE.wasm
 src/wasm/libLCE.js
+/dev-dist

@@ -5,6 +5,7 @@ import { mount } from 'svelte'
 import App from './App.svelte'
 import { LoadingScreen } from './loadingScreen'
 import { initL10N } from './L10N'
+import LibLCEWasm from './wasm/libLCE'
 
 // @ts-ignore because it works anyways...
 export { version } from '../package.json'
@@ -24,6 +25,11 @@ async function initApp(): Promise<Record<never, never>> {
 initApp().then((mounted) => {
   app = mounted
 })
+
+// @ts-ignore Because it already IS esnext.
+export const libLCE = await LibLCEWasm()
+
+libLCE.printLibraryInfo()
 
 export default app
 

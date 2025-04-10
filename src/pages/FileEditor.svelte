@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type SaveFileEditorParams } from '../store'
   import Module from '../wasm/libLCE.js'
-  import { loadingScreen } from '../main'
+  import { libLCE, loadingScreen } from '../main';
   import { navigate } from 'svelte5-router'
   import Tree from '../components/Tree.svelte'
   import SaveFileEditor from '../components/FileEditors/SaveFileEditor.svelte'
@@ -44,11 +44,8 @@
   }
 
   const readSave = async (): Promise<void> => {
-    const mod = await Module()
-
-    mod.printLibraryInfo()
     if (params.file) {
-      const endian = params.endian == 0 ? mod.ByteOrder.BIG : mod.ByteOrder.LITTLE
+      const endian = params.endian == 0 ? libLCE.ByteOrder.BIG : libLCE.ByteOrder.LITTLE
 
       let arrayBuf = await params.file.arrayBuffer()
 
@@ -58,19 +55,19 @@
       let uint8array = new Uint8Array(arrayBuf)
       loadingScreen.progress = 15
 
-      let vector = mod.VectorFromUInt8Array(uint8array)
+      let vector = libLCE.VectorFromUInt8Array(uint8array)
       if (params.compression !== 'None') {
         loadingScreen.title = 'Decompressing save'
         loadingScreen.progress = 20
 
-        let size = mod.Compression.getSizeFromSave(vector, endian)
-        let out = mod.VectorFromUInt8Array(new Uint8Array(size))
+        let size = libLCE.Compression.getSizeFromSave(vector, endian)
+        let out = libLCE.VectorFromUInt8Array(new Uint8Array(size))
 
         console.log(out)
 
         switch (params.compression) {
           case 'Zlib': {
-            let err = mod.Compression.decompressZlibWithLength(vector, out, size, 8)
+            let err = libLCE.Compression.decompressZlibWithLength(vector, out, size, 8)
 
             if (err === false) vector = out
             else throw new Error('Zlib decompression failed!')
@@ -78,7 +75,7 @@
             break
           }
           case 'Vita RLE': {
-            let err = mod.Compression.decompressVita(vector, out, size, 8)
+            let err = libLCE.Compression.decompressVita(vector, out, size, 8)
             if (err === false) vector = out
             break
           }
@@ -90,13 +87,13 @@
 
       try {
         console.log(endian)
-        let ver = mod.SaveFileCommons.getVersionFromData(vector, endian)
+        let ver = libLCE.SaveFileCommons.getVersionFromData(vector, endian)
 
         // no std::variant??? :(
         if (ver > 1) {
-          save = new mod.SaveFile(vector, endian)
+          save = new libLCE.SaveFile(vector, endian)
         } else {
-          save = new mod.SaveFileOld(vector, endian)
+          save = new libLCE.SaveFileOld(vector, endian)
         }
       } catch (e) {
         console.error(e)
@@ -115,13 +112,13 @@
         let thumbUint8array = new Uint8Array(thumbArrayBuf)
         loadingScreen.progress = 40
 
-        let thumbVector = mod.VectorFromUInt8Array(thumbUint8array)
+        let thumbVector = libLCE.VectorFromUInt8Array(thumbUint8array)
         loadingScreen.progress = 45
         loadingScreen.title = 'Processing thumbnail'
 
         // reading specific files I think should be standalone
         try {
-          let thumb = new mod.Thumb(
+          let thumb = new libLCE.Thumb(
             thumbVector,
             endian,
             params.thumbnailNameSize,
@@ -132,9 +129,8 @@
             worldName = thumb.worldName
           }
 
-          let img = new Uint8Array(mod.VectorToUInt8Array(thumb.image))
+          let img = new Uint8Array(libLCE.VectorToUInt8Array(thumb.image))
 
-          console.log(img)
           const ctx = worldImage.getContext('2d')
           const imageData = new ImageData(new Uint8ClampedArray(img), 64, 64)
           ctx.putImageData(imageData, 0, 0)
@@ -157,7 +153,7 @@
         const filename: string = file.name.replace(/\u0000/g, '')
         loadingScreen.title = `Processing file ${filename}`
 
-        let data: Uint8Array = mod.VectorToUInt8Array(file.data)
+        let data: Uint8Array = libLCE.VectorToUInt8Array(file.data)
 
         files.push({
           name: filename,
@@ -225,7 +221,7 @@
         })
 
       for (const region of params.regions) {
-        console.log(mod.Region.getDimFromFilename(region.name))
+        console.log(libLCE.Region.getDimFromFilename(region.name))
         sfTree.push({
           file: await fromFile(region),
           type: 'file',

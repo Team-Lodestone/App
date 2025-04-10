@@ -5,6 +5,7 @@ import legacy from '@vitejs/plugin-legacy';
 import babel from 'vite-plugin-babel';
 
 export default defineConfig({
+  base: '/App',
   plugins: [
     svelte(),
     VitePWA({
@@ -24,23 +25,23 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/assets/Lodestone_Favicon.png',
+            src: '/App/assets/Lodestone_Favicon.png',
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: '/assets/Lodestone_Favicon_192x192.png',
+            src: '/App/assets/Lodestone_Favicon_192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/assets/Lodestone_Favicon_Mono.png',
+            src: '/App/assets/Lodestone_Favicon_Mono.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'monochrome'
           },
           {
-            src: '/assets/Lodestone_Favicon_Maskable.png',
+            src: '/App/assets/Lodestone_Favicon_Maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
@@ -48,37 +49,37 @@ export default defineConfig({
         ],
         file_handlers: [
           {
-            action: '/pwa-arc',
+            action: '/App/pwa-arc',
             accept: {
               'application/octet-stream': ['.arc']
             }
           },
           {
-            action: '/pwa-loc',
+            action: '/App/pwa-loc',
             accept: {
               'application/octet-stream': ['.loc']
             }
           },
           {
-            action: '/pwa-msscmp',
+            action: '/App/pwa-msscmp',
             accept: {
               'application/octet-stream': ['.msscmp']
             }
           },
           {
-            action: '/pwa-col',
+            action: '/App/pwa-col',
             accept: {
               'application/octet-stream': ['.col']
             }
           },
           {
-            action: '/pwa-grf',
+            action: '/App/pwa-grf',
             accept: {
               'application/octet-stream': ['.grf']
             }
           },
           {
-            action: '/pwa-nbt',
+            action: '/App/pwa-nbt',
             accept: {
               'application/octet-stream': ['.nbt', '.snbt'],
             }

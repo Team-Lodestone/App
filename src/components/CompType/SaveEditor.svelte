@@ -269,7 +269,7 @@
       regions,
       unknownFiles
     })
-    navigate('/SaveFileEditor')
+    navigate('/App/SaveFileEditor')
   }
 </script>
 

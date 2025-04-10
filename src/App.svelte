@@ -18,9 +18,9 @@
   import NotFound from './pages/NotFound.svelte'
 
   let themeColor = '#AD95ED'
-  let logo = '/assets/Lodestone_Logo.png'
-  let bg = '/assets/LodestoneBg.jpg'
-  let favicon = '/assets/Lodestone_Favicon.png'
+  let logo = '/App/assets/Lodestone_Logo.png'
+  let bg = '/App/assets/LodestoneBg.jpg'
+  let favicon = '/App/assets/Lodestone_Favicon.png'
 
   let path = window.location.pathname
 
@@ -28,7 +28,8 @@
     path = location.pathname
   })
 
-  $: topbarTransparent = path === '/' || path === '/Settings'
+  // later: just make array
+  $: topbarTransparent = path === '/App' || path === '/App/' || path === '/App/Settings'
 
   let sfParams: SaveFileEditorParams
   SaveFileEditorParamStore.subscribe((value) => {
@@ -41,7 +42,7 @@
   })
 
   const navigateSettings = (): void => {
-    navigate('/Settings')
+    navigate('/App/Settings')
   }
 </script>
 
@@ -85,6 +86,7 @@
     {isMobile}
     {setMobile}
     class={`${lParams.isLoading ? 'hidden' : ''}`}
+    homeUrl="/App"
   >
     <ScreenAwareTopbarButton
       {isMobile}
@@ -104,9 +106,9 @@
 
   <div class={lParams.isLoading ? 'hidden' : ''}>
     <Router url="">
-      <Route path="/"><Home /></Route>
-      <Route path="/SaveFileEditor"><FileEditor params={sfParams} /></Route>
-      <Route path="/Settings"><Settings /></Route>
+      <Route path="/App"><Home /></Route>
+      <Route path="/App/SaveFileEditor"><FileEditor params={sfParams} /></Route>
+      <Route path="/App/Settings"><Settings /></Route>
       <Route path="*" component={NotFound} />
     </Router>
   </div>

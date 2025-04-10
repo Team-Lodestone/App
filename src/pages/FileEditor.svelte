@@ -27,7 +27,7 @@
   let currentFile: TreeNode<LodestoneFile>
 
   if (!params.file) {
-    navigate('/')
+    navigate('/App')
   }
 
   if (!params.thumbnail || params.thumbnailNameSize === 0) {
@@ -100,7 +100,7 @@
         }
       } catch (e) {
         console.error(e)
-        navigate('/')
+        navigate('/App')
         loadingScreen.shown = false
         return
       }
@@ -140,7 +140,7 @@
           ctx.putImageData(imageData, 0, 0)
         } catch (e) {
           console.error(e)
-          navigate('/')
+          navigate('/App')
           loadingScreen.shown = false
           return
         }

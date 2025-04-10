@@ -7,7 +7,6 @@
   import FromTo from '../components/FromTo.svelte'
   import { onMount } from 'svelte'
   import { marked } from 'marked'
-  import { blur } from 'svelte/transition'
 
   let patchNotes: string = null
   marked.setOptions({
@@ -26,7 +25,7 @@
   }
 
   const getPatchNotes = async (): Promise<string> => {
-    const notes = await fetch(`/patch_notes/${version}.md`, { cache: 'no-store' })
+    const notes = await fetch(`/App/patch_notes/${version}.md`, { cache: 'no-store' })
 
     let contentType = notes.headers.get('content-type')
 

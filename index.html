@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Project Lodestone</title>
+    <!-- preload -->
+    <link rel="preload" href="/assets/fa/css/fontawesome.css" as="style">
+    <link rel="preload" href="/assets/fa/css/solid.css" as="style">
+    <link rel="preload" href="/assets/fa/css/brands.css" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" as="style">
+    <!--  <link rel="preload" href="/assets/Lodestone_Logo.png" as="image">-->
+    <link rel="preload" href="/assets/LodestoneBg.jpg" as="image">
+    <link rel="preload" href="/assets/Lodestone_Favicon.png" as="image">
+    <link rel="preload" href="/src/assets/L_Lodestone.svg" as="image">
+    <link rel="stylesheet" href="/assets/fa/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/fa/css/solid.css">
+    <link rel="stylesheet" href="/assets/fa/css/brands.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <meta http-equiv="Content-Security-Policy"
+          content=
+            "
+            default-src 'self';
+            script-src 'self' 'unsafe-eval' 'unsafe-inline' 'wasm-unsafe-eval';
+            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+            font-src 'self' https://fonts.gstatic.com;
+            img-src 'self' data:
+            "
+    />
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      #unsupportedMessage {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        top: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="unsupportedMessage">
+      <h1>Loading...</h1>
+      <br>
+      <h2>If this message persists, it means your browser is too old to use Project Lodestone.</h2>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "credits": {
+    "assets": {
+      "external": {
+        "html": "Some icons are from <a href='https://icons.getbootstrap.com/' class='button'>Bootstrap Icons</a> and <a href='https://fontawesome.com' class='button'>FontAwesome</a>"
+      },
+      "nikstudios": {
+        "li-1": "Created the Project Lodestone logo and assets"
+      },
+      "title": "Assets"
+    },
+    "repoContributors": {
+      "button": {
+        "image": {
+          "alt": "Repo contributors"
+        },
+        "title": "Repo contributors"
+      },
+      "title": "Repo Contributors"
+    },
+    "title": "Credits",
+    "translations": {
+      "title": "Translations"
+    },
+    "website": {
+      "title": "Website"
+    }
+  },
+  "languageDialog": {
+    "buttons": {
+      "ok": {
+        "text": "OK"
+      }
+    },
+    "dropDownBox": {
+      "header": "Select a language",
+      "title": "Select a language"
+    },
+    "title": "Languages"
+  },
+  "languages": {
+    "browserLanguage": "Use Browser Language",
+    "ar": "Arabic",
+    "ckb": "Central Kurdish",
+    "en-US": "English (United States)",
+    "ru": "Russian",
+    "fr": "French",
+    "ja": "Japanese",
+    "kmr": "Northern Kurdish"
+  },
+  "topbar": {
+    "buttons": {
+      "openDiscord": {
+        "ariaLabel": "Join the Discord",
+        "text": "Join the Discord",
+        "title": "Join the Discord"
+      },
+      "openDocumentation": {
+        "ariaLabel": "Open Project Lodestone documentation",
+        "text": "Open documentation",
+        "title": "Open documentation for Project Lodestone and technical Minecraft info for all editions."
+      },
+      "openGitHub": {
+        "ariaLabel": "View the GitHub",
+        "text": "View the GitHub",
+        "title": "Go to Team Lodestone's GitHub"
+      },
+      "openLanguageDialog": {
+        "ariaLabel": "Select a language",
+        "text": "Select a language",
+        "title": "Select a language"
+      }
+    }
+  },
+  "LodestoneUI": {
+    "Topbar": {
+      "homeButton": {
+        "logo": {
+          "alt": "Lodestone Logo (Small L)"
+        }
+      }
+    }
+  }
+}

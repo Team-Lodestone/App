@@ -1,0 +1,3 @@
+{
+  "note": "Meant to be used for tips during loading/processing/whatever... Loading might be too fast though, atleast we can add a throttle option and/or allow the user to view all tips."
+}

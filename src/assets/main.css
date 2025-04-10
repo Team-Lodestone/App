@@ -1,0 +1,278 @@
+/* region Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/* endregion */
+
+/* region Colors */
+
+/* region Light Mode/Default */
+:root {
+  /* region Accent */
+  --accent-bright: rgb(167, 133, 255);
+  --accent: rgb(167, 133, 255);
+  --accent-theme: rgb(130, 86, 237);
+  --accent-saturated: rgb(139, 92, 253);
+  --accent-more-saturated: rgb(107, 44, 253);
+  --accent-border: rgba(167, 133, 255, 0.5);
+  --accent-saturated-border: rgba(139, 92, 253, 0.5);
+  --accent-more-saturated-border: rgba(107, 44, 253, 0.5);
+  /* endregion */
+
+  /* region Text */
+  --text: rgb(60, 60, 67);
+  --text-unfocused: rgb(90, 90, 97);
+  --disabled-text: rgb(25, 25, 35);
+  /* endregion */
+
+  /* region Background */
+  --bg: rgb(255, 255, 255);
+  --bg-alt: rgb(246, 246, 247);
+  --bg-alt-2: rgb(230, 230, 230);
+  --bg-darker: rgb(240, 240, 240);
+  --bg-border-darker: rgb(220, 220, 220);
+  --bg-border: rgb(200, 200, 200);
+  --bg-disabled: rgb(220, 220, 220);
+  /* endregion */
+
+  /* region Role Colors */
+  --website-dev-color: #58a2ec;
+  --designer-color: #5dbc76; /* harder to read with light mode, orig is 6edf8c */
+  --translator-color: #fa9191;
+  /* endregion */
+
+  /* region Other */
+  --theme-inverse: rgb(0, 0, 0);
+  /* endregion */
+}
+
+/* endregion */
+
+/* region Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* region Accent */
+    --accent-bright: rgb(167, 133, 255);
+    --accent-theme: rgb(167, 133, 255);
+    --accent: rgb(95, 73, 158);
+    --accent-saturated: rgb(70, 40, 140);
+    --accent-more-saturated: rgb(46, 20, 108);
+    /* endregion */
+
+    /* region Text */
+    --text: rgba(235, 235, 245);
+    --disabled-text: rgb(145, 145, 165);
+    --text-unfocused: rgb(148, 148, 154);
+    /* endregion */
+
+    /* region Background */
+    --bg: rgb(18, 18, 18);
+    --bg-alt: rgb(39, 39, 48);
+    --bg-alt-2: rgb(25, 25, 30);
+    --bg-darker: rgb(15, 15, 14);
+    --bg-border-darker: rgb(13, 13, 13);
+    --bg-border: rgb(26, 26, 37);
+    --bg-disabled: rgb(31, 31, 37);
+    /* endregion */
+
+    /* region Role Colors */
+    --website-dev-color: #447db6;
+    --designer-color: #50a366;
+    --translator-color: #c17070;
+    /* endregion */
+
+    /* region Other */
+    --theme-inverse: rgb(255, 255, 255);
+    /* endregion */
+  }
+}
+/* endregion */
+
+/* endregion */
+
+/* region Global */
+html, body, #root, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#Home {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  justify-content: center;
+  background-color: var(--bg);
+  background-size: cover;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+* {
+  transition: background-color 500ms;
+}
+
+ul {
+  margin-left: 0;
+}
+
+a {
+  -webkit-user-drag: none;
+  text-decoration: none;
+}
+
+hr {
+  width: 100%
+}
+
+.bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 10px;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.logo {
+  margin-top: 5%;
+  -webkit-user-drag: none;
+  height: 128px;
+  width: 512px;
+  will-change: filter;
+  transition: filter 300ms, width 200ms ease-out, height 200ms ease-out;
+}
+
+/* endregion */
+
+/* region Buttons */
+
+button:not(button:disabled):hover,
+select:not(select:disabled):hover,
+.button:not(a.disabled):hover {
+  border-color: var(--accent);
+  filter: drop-shadow(0 0 0.5em var(--accent));
+  color: var(--accent-theme);
+}
+
+button,
+select,
+.button {
+  color: var(--text);
+  background-color: var(--bg-alt);
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  will-change: filter;
+  text-decoration: none;
+  transition:
+    filter 200ms,
+    border-color 100ms,
+    color 100ms ease-out;
+  border: 1px solid var(--bg-border);
+}
+
+button:disabled,
+select:disabled,
+.button:disabled,
+a.disabled {
+  color: var(--disabled-text);
+  background-color: var(--bg-disabled);
+  cursor: not-allowed;
+  border: 1px solid var(--bg-border);
+}
+/* endregion */
+
+/*region Screen Size Reactivity */
+@media (max-width: 520px) {
+  button,
+  select,
+  .button {
+    padding: 5px !important;
+  }
+}
+
+@media (max-width: 270px) {
+  button,
+  select,
+  .button {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 520px) {
+  #Loading progress {
+    width: 460px !important;
+  }
+}
+
+@media (max-width: 270px) {
+  #Loading progress {
+    width: 320px !important;
+  }
+}
+
+/* endregion */
+
+/* region Scrollbar */
+
+::-webkit-scrollbar-track {
+  background-color: var(--accent);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--bg-alt);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-theme);
+}
+
+html {
+  /*scrollbar-width: thin;*/
+  scrollbar-color: var(--accent) var(--bg-alt);
+}
+/* endregion */
+
+/* region Credits */
+.website .GitHubUser .button:hover {
+  border-color: var(--website-dev-color);
+  filter: drop-shadow(0 0 0.5em var(--website-dev-color));
+  color: var(--website-dev-color);
+}
+
+.translations .LanguageCard .translators .button:hover {
+  border-color: var(--translator-color);
+  filter: drop-shadow(0 0 0.5em var(--translator-color));
+  color: var(--translator-color);
+}
+
+.assets .GitHubUser .button:hover {
+  border-color: var(--designer-color);
+  filter: drop-shadow(0 0 0.5em var(--designer-color));
+  color: var(--designer-color);
+}
+/* endregion */
+

@@ -1,7 +1,4 @@
-# App
+# Lodestone App
+The Lodestone app, which provides world and file editing.
 
-Web UI frontend for Project Lodestone
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+For more information, check the official [Project Lodestone Website](https://team-lodestone.github.io)

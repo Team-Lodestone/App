@@ -1,0 +1,3 @@
+libLCE goes here...
+
+In the future this will use libLodestone which will use libLCE but will also be the core for many tasks.

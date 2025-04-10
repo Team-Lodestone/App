@@ -1,0 +1,7 @@
+.hexViewer {
+  overflow-y: auto;
+  font-size: 16px;
+  height: 100vh;
+  white-space: pre;
+  font-family: monospace;
+}

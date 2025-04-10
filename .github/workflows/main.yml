@@ -46,6 +46,10 @@ jobs:
           -DEMSCRIPTEN_DIR="$/home/runner/work/App/App/deps/libLCE/external/emsdk/upstream/emscripten"
           -DCMAKE_TOOLCHAIN_FILE=/home/runner/work/App/App/deps/libLCE/external/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 
+      - name: (libLCE) Build
+        run: >
+          cmake --build /home/runner/work/App/App/deps/libLCE/em-build --config Release --target libLCE
+
       - name: (libLCE) Copy built WASM files
         run: |
           cp /home/runner/work/App/App/deps/libLCE/em-build/*.wasm /home/runner/work/App/App/src/wasm

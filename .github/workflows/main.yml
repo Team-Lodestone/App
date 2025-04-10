@@ -56,7 +56,7 @@ jobs:
           cp /home/runner/work/App/App/deps/libLCE/em-build/*.js /home/runner/work/App/App/src/wasm
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Build
         run: npm run build

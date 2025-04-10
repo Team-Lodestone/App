@@ -56,7 +56,9 @@ jobs:
           cp /home/runner/work/App/App/deps/libLCE/em-build/*.js /home/runner/work/App/App/src/wasm
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm install @team-lodestone/lodestone-ui
 
       - name: Build
         run: npm run build

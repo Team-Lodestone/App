@@ -16,11 +16,12 @@ export default defineConfig({
       },
       manifest: {
         name: 'Project Lodestone',
+        short_name: 'Project Lodestone',
         description: 'Edit, Convert and Transform Minecraft Worlds',
         theme_color: '#121212',
         background_color: '#121212',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/App',
         icons: [
           {
             src: '/App/assets/Lodestone_Favicon.png',

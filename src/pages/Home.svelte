@@ -74,5 +74,5 @@
     <CompType isDisabled="true" name="File Editor" />
   </div>
   <p class="bottom-left">{version}</p>
-  <p class="bottom-right">WORK IN PROGRESS</p>
+  <p class="bottom-right">IN EARLY DEVELOPMENT</p>
 </div>

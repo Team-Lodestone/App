@@ -33,6 +33,7 @@ jobs:
         run: |
           npm ci
           npm install @team-lodestone/lodestone-ui
+          sudo apt install dos2unix
 
       - name: Build
         run: npm run build

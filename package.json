@@ -13,8 +13,11 @@
     "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
     "typecheck": "npm run typecheck:node && npm run svelte-check",
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run liblce:compile && vite build",
+    "preview": "vite preview",
+    "liblce:compile": "run-script-os",
+    "liblce:compile:win32": ".\\deps\\scripts\\liblce-compile.bat",
+    "liblce:compile:darwin:linux": "./deps/scripts/liblce-compile.sh"
   },
   "dependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
@@ -23,6 +26,7 @@
     "core-js": "^3.41.0",
     "electron-updater": "^6.3.9",
     "marked": "^15.0.7",
+    "run-script-os": "^1.1.6",
     "svelte-i18n": "^4.0.1",
     "svelte5-router": "^3.0.2"
   },

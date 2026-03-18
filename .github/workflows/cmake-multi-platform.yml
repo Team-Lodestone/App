@@ -121,9 +121,10 @@ jobs:
         if: (matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel') && matrix.c_compiler == 'clang-22'
         shell: bash
         run: |
-          brew install llvm@22
-          echo 'export PATH="$(brew --prefix llvm@22)/bin:$PATH"' >> ~/.bash_profile
-          source ~/.bash_profile
+          brew install llvm@22 \
+          ls "$(brew --prefix llvm@22)/bin/" \
+          && sudo ln -s "$(brew --prefix llvm@22)/bin/clang-22" "/usr/local/bin/clang-22" \
+          && sudo ln -s "$(brew --prefix llvm@22)/bin/clang++-22" "/usr/local/bin/clang++-22"
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.

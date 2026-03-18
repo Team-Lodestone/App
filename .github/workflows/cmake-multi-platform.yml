@@ -145,7 +145,7 @@ jobs:
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: >
-          cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} ${{ matrix.build_settings }}
+          cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} ${{ matrix.build_settings }} --parallel
 
 #      - name: Move libLCE (Linux)
 #        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'

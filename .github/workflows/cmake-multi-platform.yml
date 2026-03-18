@@ -123,7 +123,7 @@ jobs:
         run: |
           brew install llvm@22 \
           && ln -s "$(brew --prefix llvm@22)/bin/clang++" "$(brew --prefix llvm@22)/bin/clang++-22" \
-          && echo 'PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> $GITHUB_ENV \
+          && echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH \
           && echo 'LDFLAGS="-L/opt/homebrew/opt/llvm/lib"' >> $GITHUB_ENV \
           && echo 'CPPFLAGS="-I/opt/homebrew/opt/llvm/include"' >> $GITHUB_ENV \
           && echo 'CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"' >> $GITHUB_ENV \

@@ -123,14 +123,13 @@ jobs:
         run: |
           brew install llvm@22 \
           && ln -s "$(brew --prefix llvm@22)/bin/clang++" "$(brew --prefix llvm@22)/bin/clang++-22" \
-          && echo 'export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> ~/.bash_profile \
-          && echo 'export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"' >> ~/.bash_profile \
-          && echo 'export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"' >> ~/.bash_profile \
-          && echo 'export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"' >> ~/.bash_profile \
-          && echo 'export CC="$(brew --prefix llvm@22)/bin/clang-22"' >> ~/.bash_profile \
-          && echo 'export CXX="$(brew --prefix llvm@22)/bin/clang++-22"' >> ~/.bash_profile \
-          && ls "$(brew --prefix llvm@22)/bin/" \
-          && source ~/.bash_profile
+          && echo 'PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> $GITHUB_ENV \
+          && echo 'LDFLAGS="-L/opt/homebrew/opt/llvm/lib"' >> $GITHUB_ENV \
+          && echo 'CPPFLAGS="-I/opt/homebrew/opt/llvm/include"' >> $GITHUB_ENV \
+          && echo 'CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"' >> $GITHUB_ENV \
+          && echo 'CC="$(brew --prefix llvm@22)/bin/clang-22"' >> $GITHUB_ENV \
+          && echo 'CXX="$(brew --prefix llvm@22)/bin/clang++-22"' >> $GITHUB_ENV \
+          && ls "$(brew --prefix llvm@22)/bin/"
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.

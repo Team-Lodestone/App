@@ -106,13 +106,13 @@ jobs:
           version: '6.9.2'
 
       - name: Install latest GCC (Linux, macOS)
-        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm' || matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel') && matrix.c_compiler == 'gcc'
+        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm') && matrix.c_compiler == 'gcc'
         uses: egor-tensin/setup-gcc@v2
         with:
           version: 15
 
       - name: Install latest Clang (Linux, macOS)
-        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm' || matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel') && matrix.c_compiler == 'clang'
+        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm') && matrix.c_compiler == 'clang'
         uses: egor-tensin/setup-clang@v1
         with:
           version: 22

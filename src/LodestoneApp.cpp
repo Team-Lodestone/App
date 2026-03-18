@@ -19,50 +19,54 @@
 #include "Lodestone.Common/event/Cancellable.h"
 
 namespace lodestone::app {
-  LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone* core) : m_core(core),
-    m_application(argc, argv), m_window(this) {
-  }
+    LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone *core) : m_core(core),
+                                                                                m_application(argc, argv), m_window(this) {
+    }
 
-  void LodestoneApp::initialize() {
-    std::print("Lodestone.App v{}\n", std::string(VERSION));
+    void LodestoneApp::initialize() {
+        std::print("Lodestone.App v{}\n", std::string(VERSION));
 
-    std::print("== Libraries ==\n");
-    std::print("{}\n", lodestone::common::lodestone_get_library_string());
-    std::print("{}\n", bio::bio_get_library_string());
+        std::print("== Libraries ==\n");
+        std::print("{}\n", lodestone::common::lodestone_get_library_string());
+        std::print("{}\n", bio::bio_get_library_string());
 
-    std::print("== Loading extensions ==\n");
+        std::print("== Loading extensions ==\n");
 
-    lodestone::core::loader::NativeExtensionLoader l(this->m_core);
-    l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
-      std::print("Initializing extension '{}'\n", p.c_str());
-    };
+        lodestone::core::loader::NativeExtensionLoader l(this->m_core);
+        l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
+            std::print("Initializing extension '{}'\n", p.c_str());
+        };
 
-    l.extensionLoadedEvent += [this](const core::LodestoneExtension *ext) {
-      std::print("Initialized extension '{}' {}\n", ext->getIdentifier(), ext->getVersion().toString());
-      emit this->extensionInitialized(ext);
-    };
+        l.extensionLoadedEvent += [this](const core::LodestoneExtension *ext) {
+            std::print("Initialized extension '{}' {}\n", ext->getIdentifier(), ext->getVersion().toString());
+            emit this->extensionInitialized(ext);
+        };
 
-    l.load();
+        l.load();
 
-    std::print("Loaded {} extensions", this->m_core->getExtensions().size());
-  }
+        std::print("Loaded {} extensions", this->m_core->getExtensions().size());
+    }
 
-  void LodestoneApp::run() {
-    this->m_window.setFixedSize(800, 600);
-    this->m_window.show();
+    void LodestoneApp::run() {
+        QCoreApplication::setOrganizationName("Team Lodestone");
+        QCoreApplication::setApplicationName("Project Lodestone");
+        QCoreApplication::setApplicationVersion(QString::fromUtf8(LodestoneApp::VERSION.toVersionString()));
 
-    this->m_application.exec();
-  }
+        this->m_window.setFixedSize(800, 600);
+        this->m_window.show();
 
-  void LodestoneApp::stop() const {
-    this->m_application.quit();
-  }
+        this->m_application.exec();
+    }
+
+    void LodestoneApp::stop() const {
+        this->m_application.quit();
+    }
 } // app
 
 int main(const int argc, char *argv[]) {
-  lodestone::app::LodestoneApp app(argc, argv, lodestone::core::Lodestone::getInstance());
-  app.initialize();
-  app.run();
+    lodestone::app::LodestoneApp app(argc, argv, lodestone::core::Lodestone::getInstance());
+    app.initialize();
+    app.run();
 
-  return 0;
+    return 0;
 }

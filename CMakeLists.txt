@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 4) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 5) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -75,29 +75,14 @@ foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
     )
 endforeach ()
 
-install(TARGETS Lodestone.App
-        Lodestone.Level
-        Lodestone.Conversion
-        Lodestone.Core
-        nbt++
-        bio-cpp20
-        BUNDLE DESTINATION .
-)
-
-foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
-    install(TARGETS ${ext}
-    LIBRARY DESTINATION bin/extensions)
-endforeach ()
-
-set_target_properties(Lodestone.App PROPERTIES
-        WIN32_EXECUTABLE TRUE
-        MACOSX_BUNDLE TRUE
-)
-
 if(APPLE)
     set_target_properties(Lodestone.App PROPERTIES
+        MACOSX_BUNDLE TRUE
+
         MACOSX_BUNDLE_BUNDLE_NAME "ProjectLodestone"
         MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
+
+        MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
     )
 
     if (DEFINED PROJECT_VERSION_DEV)
@@ -111,9 +96,45 @@ if(APPLE)
                 MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
         )
     endif()
-    
+
+    install(TARGETS Lodestone.App
+            Lodestone.Level
+            Lodestone.Conversion
+            Lodestone.Core
+            nbt++
+            bio-cpp20
+            LIBRARY DESTINATION Contents/Frameworks
+    )
+
+    # we can't really add extensions into the binary I don't think
+    # todo we should use qt's path garbage for this and provide a setting for it, then force it to use the appdata dir on macos
+#    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+#        install(TARGETS ${ext}
+#                LIBRARY DESTINATION Contents/Frameworks)
+#    endforeach ()
+
     set(executable_path "ProjectLodestone.app")
 else()
+    if (WIN32)
+        set_target_properties(Lodestone.App PROPERTIES
+                WIN32_EXECUTABLE TRUE
+        )
+    endif()
+
+    install(TARGETS Lodestone.App
+            Lodestone.Level
+            Lodestone.Conversion
+            Lodestone.Core
+            nbt++
+            bio-cpp20
+            BUNDLE DESTINATION .
+    )
+
+    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+        install(TARGETS ${ext}
+                LIBRARY DESTINATION bin/extensions)
+    endforeach ()
+
     set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")
 endif()
 

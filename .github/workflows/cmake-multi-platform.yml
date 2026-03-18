@@ -122,13 +122,15 @@ jobs:
         shell: bash
         run: |
           brew install llvm@22 \
-          && ls "$(brew --prefix llvm@22)/bin/" \
           && ln -s "$(brew --prefix llvm@22)/bin/clang++" "$(brew --prefix llvm@22)/bin/clang++-22" \
           && echo 'export PATH="/opt/homebrew/opt/llvm/bin:PATH"' >> ~/.bash_profile \
           && echo 'export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"' >> ~/.bash_profile \
           && echo 'export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"' >> ~/.bash_profile \
           && echo 'export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"' >> ~/.bash_profile \
-          && source ~/.bash_profile
+          && echo 'export CC="$(brew --prefix llvm@22)/bin/clang"' >> ~/.bash_profile \
+          && echo 'export CXX="$(brew --prefix llvm@22)/bin/clang++"' >> ~/.bash_profile \
+          && source ~/.bash_profile \
+          && ls "$(brew --prefix llvm@22)/bin/"
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.

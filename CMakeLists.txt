@@ -14,7 +14,6 @@ file(GLOB_RECURSE FILES CONFIGURE_DEPENDS
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent)
 qt_standard_project_setup()
 
-
 if (NOT TARGET Lodestone.Core)
     include(FetchContent)
     FetchContent_Declare(
@@ -75,5 +74,44 @@ foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
             ${CMAKE_CURRENT_BINARY_DIR}/extensions
     )
 endforeach ()
+
+install(TARGETS Lodestone.App
+        Lodestone.Level
+        Lodestone.Conversion
+        Lodestone.Core
+        nbt++
+        bio
+        BUNDLE DESTINATION .
+)
+
+foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+    install(TARGETS ${ext}
+    LIBRARY DESTINATION bin/extensions)
+endforeach ()
+
+set_target_properties(Lodestone.App PROPERTIES
+        WIN32_EXECUTABLE TRUE
+        MACOSX_BUNDLE TRUE
+)
+
+if(APPLE)
+    set(executable_path "$<TARGET_FILE_NAME:Lodestone>.app")
+else()
+    set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")
+endif()
+
+if(APPLE OR WIN32)
+    qt_generate_deploy_script(
+            TARGET Lodestone.App
+            OUTPUT_SCRIPT deploy_script
+            CONTENT "
+    qt_deploy_runtime_dependencies(
+        EXECUTABLE \"${executable_path}\"
+        GENERATE_QT_CONF
+        VERBOSE
+    )")
+
+    install(SCRIPT "${deploy_script}")
+endif()
 
 setupLinter(Lodestone.App)

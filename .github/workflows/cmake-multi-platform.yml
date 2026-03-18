@@ -151,42 +151,40 @@ jobs:
 #        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
 #        run: find "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/_deps/lce-build" -type f \( -iname "*.so" -o -iname "*.dylib" \) -exec mv {} "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}" \;
 
-      - name: Run CMake Install (macOS)
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-        run: cmake --install ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} ${{ matrix.build_settings }}
+      - name: Run CMake Install
+        run: cmake --install ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} ${{ matrix.build_settings }} --prefix ${{ github.workspace }}/install
 
-      - name: Fix CI folder structure (macOS)
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-        run: touch "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/.gitignore"
+#      - name: Fix CI folder structure (macOS)
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        run: touch "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/.gitignore"
 
-      - name: QT Deploy (macOS)
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-        run: macdeployqt "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/Lodestone.app"
+#      - name: QT Deploy (macOS)
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        run: macdeployqt "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/Lodestone.app"
+#
+#      - name: QT Deploy (Windows)
+#        if: matrix.os == 'windows-latest' || matrix.os == 'windows-11-arm'
+#        run: windeployqt "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/${{ matrix.build_type }}/Lodestone.App.exe"
 
-      - name: QT Deploy (Windows)
-        if: matrix.os == 'windows-latest' || matrix.os == 'windows-11-arm'
-        run: windeployqt "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/${{ matrix.build_type }}/Lodestone.App.exe"
-
-      - name: Upload Artifact (Linux)
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
+#        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
         with:
           name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
           path: |
-            ${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/App/Lodestone.App
-            ${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/libLodestone/**/**.so
+            ${{ github.workspace }}/install/**
 
-      - name: Upload Artifact (macOS)
-        uses: actions/upload-artifact@v4
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-        with:
-          name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
-          path: |
-            ${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/Lodestone.app
-
-      - name: Upload Artifact (Windows)
-        uses: actions/upload-artifact@v4
-        if: matrix.os == 'windows-latest' || matrix.os == 'windows-11-arm'
-        with:
-          name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
-          path: ${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/${{ matrix.build_type }}
+#      - name: Upload Artifact (macOS)
+#        uses: actions/upload-artifact@v4
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        with:
+#          name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
+#          path: |
+#            ${{ github.workspace }}/install/**
+#
+#      - name: Upload Artifact (Windows)
+#        uses: actions/upload-artifact@v4
+#        if: matrix.os == 'windows-latest' || matrix.os == 'windows-11-arm'
+#        with:
+#          name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
+#          path: ${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/${{ matrix.build_type }}

@@ -15,16 +15,16 @@
 #include "Lodestone.App/gui/screens/MainScreen.h"
 
 namespace lodestone::app::gui {
-LodestoneWindow::LodestoneWindow(LodestoneApp* app, QWidget* parent) : QMainWindow(parent) {
-  this->m_screens = new QStackedWidget(this);
+  LodestoneWindow::LodestoneWindow(LodestoneApp* app, QWidget* parent) : QMainWindow(parent) {
+    this->m_screens = new QStackedWidget(this);
 
-  this->m_mainScreen = new screens::MainScreen(app, this->m_screens);
-  this->m_aboutScreen = new screens::AboutScreen(app, this->m_screens);
+    this->m_mainScreen = new screens::MainScreen(app, this->m_screens);
+    this->m_aboutScreen = new screens::AboutScreen(app, this->m_screens);
 
-  this->m_screens->insertWidget(static_cast<int>(ScreenIndex::MAIN_SCREEN), this->m_mainScreen);
-  this->m_screens->insertWidget(static_cast<int>(ScreenIndex::ABOUT_SCREEN), this->m_aboutScreen);
+    this->m_screens->insertWidget(static_cast<int>(ScreenIndex::MAIN_SCREEN), this->m_mainScreen);
+    this->m_screens->insertWidget(static_cast<int>(ScreenIndex::ABOUT_SCREEN), this->m_aboutScreen);
 
-  this->switchScreen(ScreenIndex::MAIN_SCREEN);
-  this->setCentralWidget(this->m_screens);
-}
+    this->switchScreen(ScreenIndex::MAIN_SCREEN);
+    this->setCentralWidget(this->m_screens);
+  }
 }

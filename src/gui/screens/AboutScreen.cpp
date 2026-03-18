@@ -18,6 +18,7 @@
 #include <print>
 
 #include "Lodestone.App/LodestoneApp.h"
+#include "Lodestone.App/gui/qt/variant/QPushButtonVariantFactory.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 #include "Lodestone.Common/LodestoneCommon.h"
 
@@ -51,16 +52,8 @@ namespace lodestone::app::gui::screens {
 
     //OUTER INIT
 
-    QIcon backIcon = QApplication::style()->standardIcon(QStyle::SP_ArrowLeft);
-
-    QPushButton *backButton = new QPushButton(this);
-
-    if (!backIcon.isNull()) {
-      backButton->setIcon(backIcon);
-      backButton->setIconSize({24, 24});
-    } else {
-      backButton->setText("Go back");
-    }
+    const QIcon backIcon = QApplication::style()->standardIcon(QStyle::SP_ArrowLeft);
+    QPushButton *backButton = qt::variant::QPushButtonVariantFactory::createWithIcon(backIcon, {24, 24}, "Go back", this);
 
     backButton->connect(backButton, &QPushButton::clicked, this, &AboutScreen::onBackButtonClicked);
     backButton->show();
@@ -74,7 +67,7 @@ namespace lodestone::app::gui::screens {
       this->m_registeredExtensions->addWidget(
         new QLabel(
           QString::fromStdString(
-            std::format("{} v{}", ext->getIdentifier(), ext->getVersion().toString())
+            std::format("{} {}", ext->getIdentifier(), ext->getVersion().toString())
           )
         )
       );

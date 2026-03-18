@@ -37,16 +37,17 @@ class LodestoneWindow : public QMainWindow {
       ABOUT_SCREEN
     };
 
-    QWidget *currentScreenElement() const {
+    [[nodiscard]] QWidget *currentScreenElement() const {
       return this->m_screens->currentWidget();
     }
 
-    ScreenIndex currentScreen() const {
+    [[nodiscard]] ScreenIndex currentScreen() const {
       return static_cast<ScreenIndex>(this->m_screens->currentIndex());
     }
 
     void switchScreen(const ScreenIndex idx) {
-      m_previousScreens.push(this->m_screens->currentWidget());
+      if (this->currentScreenElement() != nullptr)
+        m_previousScreens.push(this->currentScreenElement());
 
       this->m_screens->setCurrentIndex(static_cast<int>(idx));
     }

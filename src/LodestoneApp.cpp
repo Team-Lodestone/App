@@ -38,7 +38,7 @@ namespace lodestone::app {
     };
 
     l.extensionLoadedEvent += [this](const core::LodestoneExtension *ext) {
-      std::print("Initialized extension '{}' v{}\n", ext->getIdentifier(), ext->getVersion().toString());
+      std::print("Initialized extension '{}' {}\n", ext->getIdentifier(), ext->getVersion().toString());
       emit this->extensionInitialized(ext);
     };
 

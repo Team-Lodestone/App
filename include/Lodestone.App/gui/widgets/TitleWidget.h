@@ -13,7 +13,7 @@ namespace lodestone::app::gui::widgets {
   class TitleWidget : public QWidget {
     Q_OBJECT
   public:
-    TitleWidget(QWidget *parent = nullptr);
+    explicit TitleWidget(QWidget *parent = nullptr);
   };
 }
 

@@ -17,7 +17,7 @@ namespace lodestone::app::gui::widgets {
     QLabel *titleLabel = new QLabel("Project Lodestone");
     titleLabel->setStyleSheet("font-size: 24px;");
 
-    QLabel *versionLabel = new QLabel("v" + QString::fromStdString(LodestoneApp::VERSION.toString()));
+    QLabel *versionLabel = new QLabel(QString::fromStdString(LodestoneApp::VERSION.toString()));
     versionLabel->setStyleSheet("font-size: 18px;");
 
     QHBoxLayout *titleLayout = new QHBoxLayout(this);

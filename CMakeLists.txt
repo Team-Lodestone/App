@@ -95,7 +95,24 @@ set_target_properties(Lodestone.App PROPERTIES
 )
 
 if(APPLE)
-    set(executable_path "$<TARGET_FILE_NAME:Lodestone>.app")
+    set_target_properties(Lodestone.App PROPERTIES
+        MACOSX_BUNDLE_BUNDLE_NAME "ProjectLodestone"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
+    )
+
+    if (DEFINED PROJECT_VERSION_DEV)
+        set_target_properties(Lodestone.App PROPERTIES
+                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}
+        )
+    else()
+        set_target_properties(Lodestone.App PROPERTIES
+                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
+        )
+    endif()
+    
+    set(executable_path "ProjectLodestone.app")
 else()
     set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")
 endif()

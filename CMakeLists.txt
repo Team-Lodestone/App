@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 3) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 4) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -15,13 +15,25 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent)
 qt_standard_project_setup()
 
 
+if (NOT TARGET Lodestone.Core)
+    include(FetchContent)
+    FetchContent_Declare(
+            libLodestone
+            GIT_REPOSITORY https://github.com/Team-Lodestone/libLodestone.git
+            GIT_TAG main
+            GIT_SHALLOW TRUE
+    )
+
+    FetchContent_MakeAvailable(libLodestone)
+endif()
+
 qt_add_executable(Lodestone.App ${FILES})
 target_include_directories(Lodestone.App
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-target_link_libraries(Lodestone.App PRIVATE
+target_link_libraries(Lodestone.App PUBLIC
         Lodestone.Level
         Lodestone.Conversion
         Lodestone.Core
@@ -54,14 +66,14 @@ set(PRECOMPILED_EXTENSIONS
 )
 
 foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
-add_dependencies(Lodestone.App ${ext})
+    add_dependencies(Lodestone.App ${ext})
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extensions)
-add_custom_command(TARGET Lodestone.App POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_FILE:${ext}>
-        ${CMAKE_CURRENT_BINARY_DIR}/extensions
-)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extensions)
+    add_custom_command(TARGET Lodestone.App POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:${ext}>
+            ${CMAKE_CURRENT_BINARY_DIR}/extensions
+    )
 endforeach ()
 
 setupLinter(Lodestone.App)

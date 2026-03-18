@@ -37,7 +37,7 @@ target_link_libraries(Lodestone.App PUBLIC
         Lodestone.Conversion
         Lodestone.Core
         nbt++
-        bio
+        bio-cpp20
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
@@ -80,7 +80,7 @@ install(TARGETS Lodestone.App
         Lodestone.Conversion
         Lodestone.Core
         nbt++
-        bio
+        bio-cpp20
         BUNDLE DESTINATION .
 )
 

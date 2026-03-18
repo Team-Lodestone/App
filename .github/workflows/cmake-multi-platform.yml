@@ -23,7 +23,7 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest, macos-15-intel, windows-11-arm ]
+        os: [ ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest, macos-26-intel, windows-11-arm ]
         build_type: [ Release, Debug ]
         c_compiler: [ gcc, clang-22, cl ]
         include:
@@ -67,12 +67,12 @@ jobs:
             compiler_name: GCC
             c_compiler: gcc
             cpp_compiler: g++
-          - os: macos-15-intel
+          - os: macos-26-intel
             platform_name: macOS x86_64
             compiler_name: Clang
             c_compiler: clang-22
             cpp_compiler: clang++-22
-          - os: macos-15-intel
+          - os: macos-26-intel
             platform_name: macOS x86_64
             compiler_name: GCC
             c_compiler: gcc
@@ -92,7 +92,7 @@ jobs:
             c_compiler: cl
           - os: macos-latest
             c_compiler: cl
-          - os: macos-15-intel
+          - os: macos-26-intel
             c_compiler: cl
 
     steps:
@@ -118,7 +118,7 @@ jobs:
           wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 22
 
       - name: Install latest Clang (macOS)
-        if: (matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel') && matrix.c_compiler == 'clang-22'
+        if: (matrix.os == 'macos-latest' || matrix.os == 'macos-26-intel') && matrix.c_compiler == 'clang-22'
         shell: bash
         run: |
           brew install llvm@22 \
@@ -159,11 +159,11 @@ jobs:
         run: cmake --install ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} ${{ matrix.build_settings }} --prefix ${{ github.workspace }}/install
 
 #      - name: Fix CI folder structure (macOS)
-#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-26-intel'
 #        run: touch "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/.gitignore"
 
 #      - name: QT Deploy (macOS)
-#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-26-intel'
 #        run: macdeployqt "${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}/Lodestone.app"
 #
 #      - name: QT Deploy (Windows)
@@ -180,7 +180,7 @@ jobs:
 
 #      - name: Upload Artifact (macOS)
 #        uses: actions/upload-artifact@v4
-#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
+#        if: matrix.os == 'macos-latest' || matrix.os == 'macos-26-intel'
 #        with:
 #          name: ${{ matrix.platform_name }}-${{ matrix.compiler_name }}_${{ matrix.build_type }}
 #          path: |

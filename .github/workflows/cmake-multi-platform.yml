@@ -122,8 +122,8 @@ jobs:
         shell: bash
         run: |
           brew install llvm@22
-          echo 'export PATH="/opt/homebrew/opt/llvm@22/bin:$PATH"' >> /Users/runner/.bash_profile
-          source /Users/runner/.bash_profile
+          echo 'export PATH="$(brew --prefix llvm@22)/bin:$PATH"' >> ~/.bash_profile
+          source ~/.bash_profile
 
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.

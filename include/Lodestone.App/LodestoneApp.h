@@ -57,6 +57,10 @@ namespace lodestone::app {
         return this->m_core;
       }
 
+      gui::LodestoneWindow &window() {
+        return this->m_window;
+      }
+
     signals:
       void extensionInitialized(const core::LodestoneExtension *extension);
 

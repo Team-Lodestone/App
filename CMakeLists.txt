@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 1) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 2) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 

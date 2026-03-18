@@ -13,26 +13,56 @@
 #include <qtmetamacros.h>
 #include <QMainWindow>
 #include <QStackedWidget>
+#include <stack>
 
-#include "Lodestone.App/gui/screens/MainScreen.h"
+#include "Lodestone.App/gui/screens/AboutScreen.h"
 
 namespace lodestone::app {
 class LodestoneApp;
 }
 
 namespace lodestone::app::gui {
-  class LodestoneWindow : public QMainWindow {
+namespace screens {
+class MainScreen;
+}
+
+class LodestoneWindow : public QMainWindow {
     Q_OBJECT
 
   public:
     LodestoneWindow(LodestoneApp *app, QWidget *parent = nullptr);
 
-    QWidget *currentScreen() const {
+    enum class ScreenIndex : int {
+      MAIN_SCREEN,
+      ABOUT_SCREEN
+    };
+
+    QWidget *currentScreenElement() const {
       return this->m_screens->currentWidget();
+    }
+
+    ScreenIndex currentScreen() const {
+      return static_cast<ScreenIndex>(this->m_screens->currentIndex());
+    }
+
+    void switchScreen(const ScreenIndex idx) {
+      m_previousScreens.push(this->m_screens->currentWidget());
+
+      this->m_screens->setCurrentIndex(static_cast<int>(idx));
+    }
+
+    void switchToPreviousScreen() {
+      QWidget *s = this->m_previousScreens.top();
+      this->m_previousScreens.pop();
+
+      this->m_screens->setCurrentWidget(s);
     }
 
   private:
     screens::MainScreen *m_mainScreen;
+    screens::AboutScreen *m_aboutScreen;
+
+    std::stack<QWidget *> m_previousScreens;
 
     QStackedWidget *m_screens;
   };

@@ -16,6 +16,7 @@
 #include "Lodestone.Core/loader/NativeExtensionLoader.h"
 #include "Lodestone.Core/loader/ExtensionLoader.h"
 #include "Lodestone.Common/LodestoneCommon.h"
+#include "Lodestone.Common/event/Cancellable.h"
 
 namespace lodestone::app {
   LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone* core) : m_core(core),
@@ -32,7 +33,7 @@ namespace lodestone::app {
     std::print("== Loading extensions ==\n");
 
     lodestone::core::loader::NativeExtensionLoader l(this->m_core);
-    l.extensionLoadingEvent += [](core::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
+    l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
       std::print("Initializing extension '{}'\n", p.c_str());
     };
 
@@ -47,6 +48,7 @@ namespace lodestone::app {
   }
 
   void LodestoneApp::run() {
+    this->m_window.setFixedSize(800, 600);
     this->m_window.show();
 
     this->m_application.exec();

@@ -1,0 +1,43 @@
+/** @file AboutScreen.h
+ *
+ * @author DexrnZacAttack
+ * @date 3/12/26
+ * 
+ * @device zPc-i2
+ *
+ * @copyright Copyright (c) 2026 Team Lodestone
+ * @license This project is licensed under the LGPL 3.0 license, see the LICENSE file for details.
+ */
+#ifndef LODESTONE_ABOUTSCREEN_H
+#define LODESTONE_ABOUTSCREEN_H
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QGroupBox>
+
+#include "Lodestone.Core/Lodestone.h"
+
+namespace lodestone::app {
+class LodestoneApp;
+}
+
+namespace lodestone::app::gui::screens {
+  class AboutScreen : public QWidget {
+    Q_OBJECT
+
+  public:
+    AboutScreen(LodestoneApp *app, QWidget *parent = nullptr);
+
+  public slots:
+    void onExtensionRegistered(const lodestone::core::LodestoneExtension *ext) const;
+
+    void onBackButtonClicked();
+
+  private:
+    LodestoneApp *m_app;
+
+    QVBoxLayout *m_layout;
+    QVBoxLayout *m_registeredExtensions;
+  };
+}
+
+#endif // LODESTONE_ABOUTSCREEN_H

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 5) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 6) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -104,6 +104,7 @@ if(APPLE)
             nbt++
             bio-cpp20
             LIBRARY DESTINATION Contents/Frameworks
+            BUNDLE DESTINATION .
     )
 
     # we can't really add extensions into the binary I don't think

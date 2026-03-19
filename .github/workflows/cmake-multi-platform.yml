@@ -1,6 +1,6 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: CMake on multiple platforms
+name: Build Lodestone.App
 
 on:
   push:
@@ -128,7 +128,7 @@ jobs:
           && echo 'CPPFLAGS="-I$(brew --prefix gcc@15)/include"' >> $GITHUB_ENV \
           && echo 'CMAKE_PREFIX_PATH="$(brew --prefix gcc@15)"' >> $GITHUB_ENV \
           && echo 'CC="$(brew --prefix gcc@15)/bin/gcc-15"' >> $GITHUB_ENV \
-          && echo 'CXX="$(brew --prefix gcc@15)/bin/gcc++-15"' >> $GITHUB_ENV \
+          && echo 'CXX="$(brew --prefix gcc@15)/bin/g++-15"' >> $GITHUB_ENV \
           && ls "$(brew --prefix gcc@15)/bin/"
 
       - name: Install Clang 22 (macOS)

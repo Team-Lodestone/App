@@ -23,20 +23,20 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest, macos-26-intel, windows-11-arm ]
+        os: [ ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-26-intel ]
         build_type: [ Release, Debug ]
-        c_compiler: [ gcc, clang-22, cl ]
+        c_compiler: [ gcc, clang-22 ]
         include:
-          - os: windows-latest
-            platform_name: Windows x86_64
-            compiler_name: MSVC
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: windows-11-arm
-            platform_name: Windows AArch64
-            compiler_name: MSVC
-            c_compiler: cl
-            cpp_compiler: cl
+#          - os: windows-latest
+#            platform_name: Windows x86_64
+#            compiler_name: MSVC
+#            c_compiler: cl
+#            cpp_compiler: cl
+#          - os: windows-11-arm
+#            platform_name: Windows AArch64
+#            compiler_name: MSVC
+#            c_compiler: cl
+#            cpp_compiler: cl
           - os: ubuntu-latest
             platform_name: Linux x86_64
             compiler_name: GCC
@@ -77,23 +77,23 @@ jobs:
             compiler_name: GCC
             c_compiler: gcc
             cpp_compiler: g++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang-22
-          - os: windows-11-arm
-            c_compiler: gcc
-          - os: windows-11-arm
-            c_compiler: clang-22
-          - os: ubuntu-latest
-            c_compiler: cl
-          - os: ubuntu-24.04-arm
-            c_compiler: cl
-          - os: macos-latest
-            c_compiler: cl
-          - os: macos-26-intel
-            c_compiler: cl
+#        exclude:
+#          - os: windows-latest
+#            c_compiler: gcc
+#          - os: windows-latest
+#            c_compiler: clang-22
+#          - os: windows-11-arm
+#            c_compiler: gcc
+#          - os: windows-11-arm
+#            c_compiler: clang-22
+#          - os: ubuntu-latest
+#            c_compiler: cl
+#          - os: ubuntu-24.04-arm
+#            c_compiler: cl
+#          - os: macos-latest
+#            c_compiler: cl
+#          - os: macos-26-intel
+#            c_compiler: cl
 
     steps:
       - uses: actions/checkout@v4

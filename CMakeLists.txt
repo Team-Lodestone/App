@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 7) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 8) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -31,6 +31,9 @@ target_include_directories(Lodestone.App
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+set_target_properties(Lodestone.App PROPERTIES
+        OUTPUT_NAME "Lodestone"
+)
 
 target_link_libraries(Lodestone.App PUBLIC
         Lodestone.Level
@@ -51,12 +54,12 @@ set(VERSIONS
         DEV
 )
 
-foreach(k IN LISTS VERSIONS)
+foreach (k IN LISTS VERSIONS)
     if (DEFINED PROJECT_VERSION_${k})
         target_compile_definitions(Lodestone.App PUBLIC
                 LODESTONE_APP_${k}_VERSION=${PROJECT_VERSION_${k}}
         )
-    endif()
+    endif ()
 endforeach ()
 
 set(PRECOMPILED_EXTENSIONS
@@ -65,6 +68,7 @@ set(PRECOMPILED_EXTENSIONS
 )
 
 foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
     add_dependencies(Lodestone.App ${ext})
 
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extensions)
@@ -75,14 +79,14 @@ foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
     )
 endforeach ()
 
-if(APPLE)
+if (APPLE)
     set_target_properties(Lodestone.App PROPERTIES
-        MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE TRUE
 
-        MACOSX_BUNDLE_BUNDLE_NAME "ProjectLodestone"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
+            MACOSX_BUNDLE_BUNDLE_NAME "Project Lodestone"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
 
-        MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
+            MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
     )
 
     if (DEFINED PROJECT_VERSION_DEV)
@@ -90,12 +94,12 @@ if(APPLE)
                 MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
                 MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}
         )
-    else()
+    else ()
         set_target_properties(Lodestone.App PROPERTIES
                 MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
                 MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
         )
-    endif()
+    endif ()
 
     install(TARGETS Lodestone.App
             Lodestone.Level
@@ -103,24 +107,24 @@ if(APPLE)
             Lodestone.Core
             nbt++
             bio-cpp20
-            LIBRARY DESTINATION Contents/Frameworks
+            LIBRARY DESTINATION Lodestone.App.app/Contents/Frameworks
             BUNDLE DESTINATION .
     )
 
     # we can't really add extensions into the binary I don't think
     # todo we should use qt's path garbage for this and provide a setting for it, then force it to use the appdata dir on macos
-#    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
-#        install(TARGETS ${ext}
-#                LIBRARY DESTINATION Contents/Frameworks)
-#    endforeach ()
+    #    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+    #        install(TARGETS ${ext}
+    #                LIBRARY DESTINATION Contents/Frameworks)
+    #    endforeach ()
 
-    set(executable_path "Lodestone.App.app")
-else()
+    set(executable_path "Lodestone.app")
+else ()
     if (WIN32)
         set_target_properties(Lodestone.App PROPERTIES
                 WIN32_EXECUTABLE TRUE
         )
-    endif()
+    endif ()
 
     install(TARGETS Lodestone.App
             Lodestone.Level
@@ -131,15 +135,15 @@ else()
             BUNDLE DESTINATION .
     )
 
-    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
+    foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
         install(TARGETS ${ext}
                 LIBRARY DESTINATION bin/extensions)
     endforeach ()
 
     set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")
-endif()
+endif ()
 
-if(APPLE OR WIN32)
+if (APPLE OR WIN32)
     qt_generate_deploy_script(
             TARGET Lodestone.App
             OUTPUT_SCRIPT deploy_script
@@ -151,6 +155,6 @@ if(APPLE OR WIN32)
     )")
 
     install(SCRIPT "${deploy_script}")
-endif()
+endif ()
 
 setupLinter(Lodestone.App)

@@ -7,6 +7,8 @@
  */
 #ifndef LODESTONE_MAINSCREEN_H
 #define LODESTONE_MAINSCREEN_H
+#include "Lodestone.App/gui/screen/Screen.h"
+
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -14,19 +16,15 @@ namespace lodestone::app {
   class LodestoneApp;
 }
 
-namespace lodestone::app::gui::screens {
-  class MainScreen : public QWidget {
-    Q_OBJECT
-
+namespace lodestone::app::gui::screen::screens {
+  class MainScreen : public screen::Screen {
   public:
-    MainScreen(LodestoneApp *app, QWidget *parent = nullptr);
+      explicit MainScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
   private slots:
     void onAboutButtonClicked();
 
   private:
-    LodestoneApp *m_app;
-
     QVBoxLayout *m_layout;
     QHBoxLayout *m_toolbar;
   };

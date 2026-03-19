@@ -8,8 +8,7 @@
  * @copyright Copyright (c) 2026 Team Lodestone
  * @license This project is licensed under the LGPL 3.0 license, see the LICENSE file for details.
  */
-#include "Lodestone.App/gui/screens/AboutScreen.h"
-#include "Lodestone.App/gui/screens/AboutScreen.h"
+#include "Lodestone.App/gui/screen/screens/AboutScreen.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
@@ -22,8 +21,8 @@
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 #include "Lodestone.Common/LodestoneCommon.h"
 
-namespace lodestone::app::gui::screens {
-    AboutScreen::AboutScreen(LodestoneApp *app, QWidget *parent) : QWidget(parent), m_app(app) {
+namespace lodestone::app::gui::screen::screens {
+    AboutScreen::AboutScreen(LodestoneApp *app, QWidget *parent) : Screen(app, parent) {
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         const auto outer = new QVBoxLayout(this);

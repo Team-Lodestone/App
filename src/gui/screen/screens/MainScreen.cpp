@@ -5,7 +5,7 @@
  * 
  * @device zPc-i2
  */
-#include "Lodestone.App/gui/screens/MainScreen.h"
+#include "Lodestone.App/gui/screen/screens/MainScreen.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -14,8 +14,8 @@
 #include "Lodestone.App/gui/qt/variant/QPushButtonVariantFactory.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 
-namespace lodestone::app::gui::screens {
-  MainScreen::MainScreen(LodestoneApp* app, QWidget* parent) : m_app(app) {
+namespace lodestone::app::gui::screen::screens {
+  MainScreen::MainScreen(LodestoneApp* app, QWidget* parent) : Screen(app, parent) {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // MAIN LAYOUT INIT

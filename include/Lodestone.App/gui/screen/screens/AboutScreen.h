@@ -10,6 +10,8 @@
  */
 #ifndef LODESTONE_ABOUTSCREEN_H
 #define LODESTONE_ABOUTSCREEN_H
+#include "Lodestone.App/gui/screen/Screen.h"
+
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QGroupBox>
@@ -20,12 +22,10 @@ namespace lodestone::app {
 class LodestoneApp;
 }
 
-namespace lodestone::app::gui::screens {
-  class AboutScreen : public QWidget {
-    Q_OBJECT
-
+namespace lodestone::app::gui::screen::screens {
+  class AboutScreen : public screen::Screen {
   public:
-    AboutScreen(LodestoneApp *app, QWidget *parent = nullptr);
+      explicit AboutScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
   public slots:
     void onExtensionRegistered(const lodestone::core::LodestoneExtension *ext) const;
@@ -33,8 +33,6 @@ namespace lodestone::app::gui::screens {
     void onBackButtonClicked();
 
   private:
-    LodestoneApp *m_app;
-
     QVBoxLayout *m_layout;
     QVBoxLayout *m_registeredExtensions;
   };

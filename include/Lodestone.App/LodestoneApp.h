@@ -10,11 +10,16 @@
  */
 #ifndef PROJECT_LODESTONE_LODESTONEAPP_H
 #define PROJECT_LODESTONE_LODESTONEAPP_H
+#include "Lodestone.App/Options.h"
+
 #include <Lodestone.Common/util/Semver.h>
 #include <Lodestone.Core/Lodestone.h>
 #include <QApplication>
 
 #include "Lodestone.App/gui/LodestoneWindow.h"
+#include "Lodestone.App/options/manager/OptionsManager.h"
+
+#include <filesystem>
 
 #ifdef LODESTONE_APP_MAJOR_VERSION
 #define MAJOR LODESTONE_APP_MAJOR_VERSION
@@ -42,33 +47,42 @@
 
 namespace lodestone::app {
     class LodestoneApp : public QObject {
-      Q_OBJECT
+        Q_OBJECT
 
     public:
-      static constexpr common::util::Semver VERSION {MAJOR, MINOR, PATCH, DEV};
+        static constexpr common::util::Semver VERSION{MAJOR, MINOR, PATCH, DEV};
 
-      LodestoneApp(int argc, char *argv[], core::Lodestone *core);
-      void initialize();
+        LodestoneApp(int argc, char *argv[], core::Lodestone *core);
 
-      void run();
-      void stop() const;
+        void initialize();
 
-      core::Lodestone *core() const {
-        return this->m_core;
-      }
+        void run();
 
-      gui::LodestoneWindow &window() {
-        return this->m_window;
-      }
+        void stop();
+
+        void loadExtensions();
+
+        core::Lodestone *core() const {
+            return this->m_core;
+        }
+
+        gui::LodestoneWindow &window() {
+            return this->m_window;
+        }
+
+        static std::filesystem::path getOptionsPath();
+
+        Options &options() const;
 
     signals:
-      void extensionInitialized(const core::LodestoneExtension *extension);
+        void extensionInitialized(const core::LodestoneExtension *extension);
 
     private:
-      core::Lodestone *m_core;
+        core::Lodestone *m_core;
+        options::manager::OptionsManager *m_optionsManager;
 
-      QApplication m_application;
-      gui::LodestoneWindow m_window;
+        QApplication m_application;
+        gui::LodestoneWindow m_window;
     };
 } // app
 // lodestone

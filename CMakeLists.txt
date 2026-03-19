@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 8) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 9) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -24,7 +24,12 @@ if (NOT TARGET Lodestone.Core)
     )
 
     FetchContent_MakeAvailable(libLodestone)
-endif()
+endif ()
+
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
+FetchContent_MakeAvailable(json)
 
 qt_add_executable(Lodestone.App ${FILES})
 target_include_directories(Lodestone.App
@@ -40,6 +45,7 @@ target_link_libraries(Lodestone.App PUBLIC
         Lodestone.Conversion
         Lodestone.Core
         nbt++
+        nlohmann_json
         bio-cpp20
         Qt6::Core
         Qt6::Gui
@@ -67,7 +73,6 @@ set(PRECOMPILED_EXTENSIONS
         Lodestone.Minecraft.Console
 )
 
-foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
 foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
     add_dependencies(Lodestone.App ${ext})
 
@@ -106,6 +111,7 @@ if (APPLE)
             Lodestone.Conversion
             Lodestone.Core
             nbt++
+            nlohmann_json
             bio-cpp20
             LIBRARY DESTINATION Lodestone.App.app/Contents/Frameworks
             BUNDLE DESTINATION .
@@ -131,6 +137,7 @@ else ()
             Lodestone.Conversion
             Lodestone.Core
             nbt++
+            nlohmann_json
             bio-cpp20
             BUNDLE DESTINATION .
     )

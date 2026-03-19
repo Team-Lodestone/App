@@ -13,14 +13,14 @@
 namespace lodestone::app::util {
     // HACK TO GET AROUND https://forum.qt.io/post/812515
     std::filesystem::path Environment::getStorageDirectory() {
-        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toUtf8().data();
+        return std::filesystem::path(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toUtf8().data()).make_preferred();
     }
 
     std::filesystem::path Environment::getConfigDirectory() {
-        return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).toUtf8().data();
+        return std::filesystem::path(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).toUtf8().data()).make_preferred();
     }
 
     std::filesystem::path Environment::getCurrentDirectory() {
-        return QCoreApplication::applicationDirPath().toUtf8().data();
+        return std::filesystem::path(QCoreApplication::applicationDirPath().toUtf8().data()).make_preferred();
     }
 }

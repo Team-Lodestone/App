@@ -84,7 +84,7 @@ namespace lodestone::app {
 
         lodestone::core::loader::NativeExtensionLoader l(this->options().extensionsPath, this->m_core);
         l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
-            std::println("Initializing extension '{}'", p.c_str());
+            std::println("Initializing extension '{}'", p.generic_string());
         };
 
         l.extensionLoadedEvent += [this](const core::LodestoneExtension *ext) {

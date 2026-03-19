@@ -20,6 +20,9 @@ namespace lodestone::app::options::manager {
     }
 
     void NativeOptionsManager::load() {
+        if (!std::filesystem::exists(this->m_optionsFilePath))
+            return; // todo exception ig
+
         std::ifstream f(this->m_optionsFilePath);
         f.exceptions(std::ios::failbit | std::ios::badbit);
 

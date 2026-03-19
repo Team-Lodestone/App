@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 11) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 12) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -32,6 +32,11 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 qt_add_executable(Lodestone.App ${FILES})
+
+if (WIN32)
+    target_link_libraries(Lodestone.App PRIVATE "-lstdc++exp")
+endif ()
+
 target_include_directories(Lodestone.App
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

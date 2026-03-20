@@ -133,10 +133,10 @@ jobs:
         if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
         uses: egor-tensin/setup-mingw@v3
 
-      - name: Add MinGW to PATH (Windows)
-        if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
+      - name: Create clang++-19 (Windows)
+        if: (matrix.os == 'windows-latest') && matrix.compiler == 'clang'
         run: |
-          echo "C:\ProgramData\mingw64\mingw64\bin" >> "$GITHUB_PATH"
+          mklink "C:\ProgramData\mingw64\mingw64\bin\clang++19.exe" "C:\ProgramData\mingw64\mingw64\bin\clang++.exe"
 
       - name: Add compiler tools to ENV (Windows, GCC)
         if: (matrix.os == 'windows-latest') && matrix.compiler == 'gcc'

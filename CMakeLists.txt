@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 17) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 18) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
+
+set(LODESTONE_UTILITIES_BUILD_TESTS OFF CACHE BOOL "Build Lodestone.Tests" FORCE)
+set(BIO_TESTS OFF CACHE BOOL "Build libBIO tests" FORCE)
 
 set(GLOB_PATHS
         "include/*.h"

@@ -36,7 +36,6 @@ set(executable_path "Lodestone.app")
 qt_generate_deploy_script(
         TARGET Lodestone.App
         OUTPUT_SCRIPT deploy_script
-        NO_UNSUPPORTED_PLATFORM_ERROR
         CONTENT "
     qt_deploy_runtime_dependencies(
         EXECUTABLE \"${executable_path}\"

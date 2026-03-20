@@ -2,17 +2,17 @@
     <qresource prefix="/">
         <file>assets/icons/icon.ico</file>
         <file>assets/icons/icon.svg</file>
-        <file>assets/icons/icon16x16.png</file>
-        <file>assets/icons/icon16x16@2x.png</file>
-        <file>assets/icons/icon32x32.png</file>
-        <file>assets/icons/icon32x32@2x.png</file>
-        <file>assets/icons/icon64x64.png</file>
-        <file>assets/icons/icon64x64@2x.png</file>
-        <file>assets/icons/icon128x128.png</file>
-        <file>assets/icons/icon128x128@2x.png</file>
-        <file>assets/icons/icon256x256.png</file>
-        <file>assets/icons/icon256x256@2x.png</file>
-        <file>assets/icons/icon512x512.png</file>
-        <file>assets/icons/icon512x512@2x.png</file>
+        <file>assets/icons/icon_16x16.png</file>
+        <file>assets/icons/icon_16x16@2x.png</file>
+        <file>assets/icons/icon_32x32.png</file>
+        <file>assets/icons/icon_32x32@2x.png</file>
+        <file>assets/icons/icon_64x64.png</file>
+        <file>assets/icons/icon_64x64@2x.png</file>
+        <file>assets/icons/icon_128x128.png</file>
+        <file>assets/icons/icon_128x128@2x.png</file>
+        <file>assets/icons/icon_256x256.png</file>
+        <file>assets/icons/icon_256x256@2x.png</file>
+        <file>assets/icons/icon_512x512.png</file>
+        <file>assets/icons/icon_512x512@2x.png</file>
     </qresource>
 </RCC>

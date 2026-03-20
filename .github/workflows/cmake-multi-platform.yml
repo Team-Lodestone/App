@@ -209,6 +209,7 @@ jobs:
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -S ${{ github.workspace }}
+          -G Ninja
           -DCMAKE_CXX_STANDARD=20
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}

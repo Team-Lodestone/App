@@ -6,7 +6,7 @@ install(TARGETS Lodestone.App
         nlohmann_json
         bio-cpp20
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION Lodestone.App.app/Contents/Frameworks
+        LIBRARY DESTINATION Lodestone.app/Contents/Frameworks
         BUNDLE DESTINATION .
 )
 

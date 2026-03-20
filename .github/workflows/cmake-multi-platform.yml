@@ -100,13 +100,13 @@ jobs:
           - os: macos-latest
             platform_name: macOS AArch64
             compiler_name: AppleClang
-            compiler: clang
+            compiler: appleclang
             c_compiler: clang
             cpp_compiler: clang++
           - os: macos-26-intel
             platform_name: macOS x86_64
             compiler_name: AppleClang
-            compiler: clang
+            compiler: appleclang
             c_compiler: clang
             cpp_compiler: clang++
         exclude:

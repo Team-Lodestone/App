@@ -36,7 +36,9 @@ namespace lodestone::app {
         QCoreApplication::setOrganizationName("Team Lodestone");
         QCoreApplication::setApplicationName("Project Lodestone");
         QCoreApplication::setApplicationVersion(QString::fromUtf8(LodestoneApp::VERSION.toVersionString()));
+#ifndef __APPLE__
         QGuiApplication::setWindowIcon(QIcon(":/assets/icons/icon.ico"));
+#endif
         QGuiApplication::setDesktopFileName("Lodestone");
 
         //init filesystem garbage

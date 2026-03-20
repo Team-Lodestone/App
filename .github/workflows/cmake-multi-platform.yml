@@ -119,6 +119,11 @@ jobs:
         if: (matrix.os == 'windows-latest') && matrix.c_compiler != 'cl'
         uses: egor-tensin/setup-mingw@v3
 
+      - name: Add MinGW to PATH (Windows)
+        if: (matrix.os == 'windows-latest') && matrix.c_compiler != 'cl'
+        run: |
+          echo "C:\ProgramData\mingw64\mingw64\bin" >> "$GITHUB_PATH"
+
       - name: Install latest GCC (Linux)
         if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm') && matrix.c_compiler == 'gcc'
         uses: egor-tensin/setup-gcc@v2

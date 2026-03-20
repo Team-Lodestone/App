@@ -50,8 +50,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION LPP_RC_VERSION
- PRODUCTVERSION LPP_RC_VERSION
+ FILEVERSION LODESTONE_APP_RC_VERSION
+ PRODUCTVERSION LODESTONE_APP_RC_VERSION
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -68,12 +68,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Team Lodestone"
             VALUE "FileDescription", "A universal world converter and file editor for Minecraft"
-            VALUE "FileVersion", LODESTONE_APP_RC_VERSION
+            VALUE "FileVersion", LODESTONE_APP_VERSION
             VALUE "InternalName", "Project Lodestone"
             VALUE "LegalCopyright", "Copyright (C) 2026 Team Lodestone"
             VALUE "OriginalFilename", "Lodestone.exe"
             VALUE "ProductName", "Project Lodestone"
-            VALUE "ProductVersion", LODESTONE_APP_RC_VERSION
+            VALUE "ProductVersion", LODESTONE_APP_VERSION
         END
     END
     BLOCK "VarFileInfo"

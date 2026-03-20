@@ -47,7 +47,7 @@ set_target_properties(Lodestone.App PROPERTIES
 
 if (WIN32)
     set(ICON "${CMAKE_CURRENT_SOURCE_DIR}/rsrc/assets/icons/icon.ico")
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rsrc/windows/icon.rc.in
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rsrc/windows/icon.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/icon.rc
         @ONLY
     )
@@ -58,14 +58,18 @@ if (WIN32)
     )
 
     if (DEFINED PROJECT_VERSION_DEV)
-        target_compile_definitions(Lodestone.App PUBLIC
-                LODESTONE_APP_RC_VERSION="${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}"
+        target_compile_definitions(Lodestone.App PRIVATE
+                LODESTONE_APP_VERSION="\\"${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}\\""
         )
     else ()
-        target_compile_definitions(Lodestone.App PUBLIC
-                LODESTONE_APP_RC_VERSION="${PROJECT_VERSION}"
+        target_compile_definitions(Lodestone.App PRIVATE
+                LODESTONE_APP_VERSION="\\"${PROJECT_VERSION}\\""
         )
     endif ()
+
+    target_compile_definitions(Lodestone.App PRIVATE
+            LODESTONE_APP_RC_VERSION=${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH}
+    )
 endif ()
 
 target_link_libraries(Lodestone.App PUBLIC

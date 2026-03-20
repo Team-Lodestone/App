@@ -124,7 +124,8 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: Install Qt
+      - name: Install Qt (non-Windows)
+        if: (matrix.os != 'windows-latest')
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.10.2'
@@ -132,6 +133,13 @@ jobs:
       - name: Install MinGW (Windows)
         if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
         uses: egor-tensin/setup-mingw@v3
+
+      - name: Install Qt (Windows, NON-MSVC)
+        if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          arch: 'win64_mingw'
 
       - name: Create clang++-19 (Windows)
         if: (matrix.os == 'windows-latest') && matrix.compiler == 'clang'

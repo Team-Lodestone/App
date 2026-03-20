@@ -144,25 +144,7 @@ jobs:
       - name: Create clang++-19 (Windows)
         if: (matrix.os == 'windows-latest') && matrix.compiler == 'clang'
         run: |
-          mklink "C:\ProgramData\mingw64\mingw64\bin\clang++19.exe" "C:\ProgramData\mingw64\mingw64\bin\clang++.exe"
-
-      - name: Add compiler tools to ENV (Windows, GCC)
-        if: (matrix.os == 'windows-latest') && matrix.compiler == 'gcc'
-        run: |
-          echo 'LDFLAGS="-LC:\ProgramData\mingw64\mingw64\lib"' >> $GITHUB_ENV
-          echo 'CPPFLAGS="-IC:\ProgramData\mingw64\mingw64\include"' >> $GITHUB_ENV
-          echo 'CMAKE_PREFIX_PATH="C:\ProgramData\mingw64\mingw64\"' >> $GITHUB_ENV
-          echo 'CC="C:\ProgramData\mingw64\mingw64\bin\gcc"' >> $GITHUB_ENV
-          echo 'CXX="C:\ProgramData\mingw64\mingw64\bin\g++"' >> $GITHUB_ENV
-
-      - name: Add compiler tools to ENV (Windows, Clang)
-        if: (matrix.os == 'windows-latest') && matrix.compiler == 'clang'
-        run: |
-          echo 'LDFLAGS="-LC:\ProgramData\mingw64\mingw64\lib"' >> $GITHUB_ENV
-          echo 'CPPFLAGS="-IC:\ProgramData\mingw64\mingw64\include"' >> $GITHUB_ENV
-          echo 'CMAKE_PREFIX_PATH="C:\ProgramData\mingw64\mingw64\"' >> $GITHUB_ENV
-          echo 'CC="C:\ProgramData\mingw64\mingw64\bin\clang"' >> $GITHUB_ENV
-          echo 'CXX="C:\ProgramData\mingw64\mingw64\bin\clang++"' >> $GITHUB_ENV
+          New-Item -Path "C:\ProgramData\mingw64\mingw64\bin\clang++19.exe" -ItemType SymbolicLink -Value "C:\ProgramData\mingw64\mingw64\bin\clang++.exe"
 
       - name: Install latest GCC (Linux)
         if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm') && matrix.compiler == 'gcc'
@@ -211,9 +193,23 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}" >> "$GITHUB_OUTPUT"
 
-      - name: Configure CMake
+      - name: Configure CMake (non-Windows)
         # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        if: (matrix.os != 'windows-latest')
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -S ${{ github.workspace }}
+          -DCMAKE_CXX_STANDARD=20
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          ${{ matrix.settings }}
+
+      - name: Configure CMake (Windows)
+        # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
+        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        if: (matrix.os == 'windows-latest')
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -S ${{ github.workspace }}

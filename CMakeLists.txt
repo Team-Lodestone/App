@@ -25,6 +25,12 @@ if (WIN32)
     )
 endif ()
 
+if(APPLE)
+    list(APPEND GLOB_PATHS
+        "rsrc/macos/*.icns"
+    )
+endif()
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 file(GLOB_RECURSE FILES CONFIGURE_DEPENDS ${GLOB_PATHS})
 
@@ -55,6 +61,9 @@ if (APPLE)
 
             MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
     )
+
+    set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/rsrc/macos/Lodestone.icns PROPERTIES
+            MACOSX_PACKAGE_LOCATION "Resources")
 
     if (DEFINED PROJECT_VERSION_DEV)
         set_target_properties(Lodestone.App PROPERTIES

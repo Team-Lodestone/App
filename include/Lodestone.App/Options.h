@@ -8,6 +8,8 @@
 #ifndef LODESTONE_OPTIONS_H
 #define LODESTONE_OPTIONS_H
 
+#include "Lodestone.App/gui/options/GuiOptionRegistry.h"
+
 #include <nlohmann/json.hpp>
 
 namespace lodestone::app {
@@ -23,6 +25,12 @@ namespace lodestone::app {
         static Options fromDefault();
 
         std::filesystem::path extensionsPath;
+
+        void registerGuiOptions();
+
+        gui::option::GuiOptionRegistry &guiOptions() {
+            return this->m_guiOptions;
+        }
 
     private:
         template <typename T>
@@ -61,6 +69,8 @@ namespace lodestone::app {
                 output = value.value();
             }
         }
+
+        gui::option::GuiOptionRegistry m_guiOptions;
     };
 }
 

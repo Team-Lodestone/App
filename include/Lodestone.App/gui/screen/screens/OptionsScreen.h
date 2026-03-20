@@ -7,12 +7,18 @@
  */
 #ifndef LODESTONE_OPTIONSSCREEN_H
 #define LODESTONE_OPTIONSSCREEN_H
+#include "Lodestone.App/Options.h"
 #include "Lodestone.App/gui/screen/Screen.h"
+
+#include <QVBoxLayout>
 
 namespace lodestone::app::gui::screen::screens {
     class OptionsScreen : public screen::Screen {
     public:
         explicit OptionsScreen(LodestoneApp *app, QWidget *parent = nullptr);
+
+    private:
+        QVBoxLayout *m_layout;
     };
 }
 

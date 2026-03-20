@@ -11,6 +11,7 @@
 #ifndef LODESTONE_LODESTONEWINDOW_H
 #define LODESTONE_LODESTONEWINDOW_H
 #include "Lodestone.App/gui/screen/Screen.h"
+#include "Lodestone.App/gui/screen/screens/OptionsScreen.h"
 
 #include <qtmetamacros.h>
 #include <QMainWindow>
@@ -53,6 +54,14 @@ namespace lodestone::app::gui {
             if (this->currentScreenElement() != nullptr)
                 m_previousScreens.push(this->currentScreenElement());
 
+            if (idx == ScreenIndex::OPTIONS_SCREEN) {
+                // TODO TODO TODO VERY TEMPORARY
+                // we will switch to tabbed interface, and then handle screen instances there.
+                // this is for testing and development of the options stuffs
+                this->m_optionsScreen = new screen::screens::OptionsScreen(this->m_app, this);
+                this->m_screens->insertWidget(static_cast<int>(ScreenIndex::OPTIONS_SCREEN), this->m_optionsScreen);
+            }
+
             this->m_screens->setCurrentIndex(static_cast<int>(idx));
         }
 
@@ -74,6 +83,8 @@ namespace lodestone::app::gui {
         }
 
     private:
+        LodestoneApp *m_app;
+
         screen::screens::MainScreen *m_mainScreen;
         screen::screens::AboutScreen *m_aboutScreen;
         screen::screens::OptionsScreen *m_optionsScreen;

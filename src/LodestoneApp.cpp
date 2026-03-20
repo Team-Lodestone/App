@@ -26,7 +26,7 @@
 #include <fstream>
 
 namespace lodestone::app {
-    LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone *core) : m_core(core),
+    LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone *core) : m_core(core), m_optionsManager(nullptr),
                                                                                 m_application(argc, argv), m_window(this) {
     }
 

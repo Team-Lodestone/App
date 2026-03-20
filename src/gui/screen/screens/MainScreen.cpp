@@ -14,45 +14,58 @@
 #include "Lodestone.App/gui/qt/variant/QPushButtonVariantFactory.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 
+#include <qicon.h>
+
 namespace lodestone::app::gui::screen::screens {
-  MainScreen::MainScreen(LodestoneApp* app, QWidget* parent) : Screen(app, parent) {
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    MainScreen::MainScreen(LodestoneApp *app, QWidget *parent) : Screen(app, parent) {
+        this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // MAIN LAYOUT INIT
-    this->m_layout = new QVBoxLayout(this);
-    this->m_layout->setAlignment(Qt::AlignTop);
+        // MAIN LAYOUT INIT
+        this->m_layout = new QVBoxLayout(this);
+        this->m_layout->setAlignment(Qt::AlignTop);
 
-    //INNER LAYOUT INIT
-    auto innerLayout = new QVBoxLayout();
-    innerLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-    this->m_layout->addLayout(innerLayout);
+        //INNER LAYOUT INIT
+        auto innerLayout = new QVBoxLayout();
+        innerLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+        this->m_layout->addLayout(innerLayout);
 
-    //INNER OBJECTS INIT
-    innerLayout->addWidget(new widgets::TitleWidget());
+        //INNER OBJECTS INIT
+        innerLayout->addWidget(new widgets::TitleWidget());
 
-    // TOOLBAR INIT
-    this->m_toolbar = new QHBoxLayout(this);
+        // TOOLBAR INIT
+        this->m_toolbar = new QHBoxLayout(this);
 
-    //TOOLBAR OBJECTS INIT
-    QLabel *versionLabel = new QLabel(QString::fromStdString(LodestoneApp::VERSION.toString()));
-    versionLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
+        //TOOLBAR OBJECTS INIT
+        QLabel *versionLabel = new QLabel(QString::fromStdString(LodestoneApp::VERSION.toString()));
+        versionLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
 
-    const QIcon aboutIcon = QIcon::fromTheme("help-about");
-    QPushButton *aboutButton = qt::variant::QPushButtonVariantFactory::createWithIcon(aboutIcon, {24, 24}, "About", this);
-    aboutButton->setFixedSize(36, 36);
+        const QIcon aboutIcon = QIcon::fromTheme("help-about");
+        QPushButton *aboutButton = qt::variant::QPushButtonVariantFactory::createWithIcon(aboutIcon, {24, 24}, "About", this);
+        aboutButton->setFixedSize(36, 36);
 
-    QPushButton::connect(aboutButton, &QPushButton::clicked, this, &MainScreen::onAboutButtonClicked);
+        QPushButton::connect(aboutButton, &QPushButton::clicked, this, &MainScreen::onAboutButtonClicked);
 
-    this->m_toolbar->addWidget(versionLabel);
-    this->m_toolbar->addWidget(aboutButton);
+        const QIcon optionsIcon = QIcon::fromTheme("configure");
+        QPushButton *optionsButton = qt::variant::QPushButtonVariantFactory::createWithIcon(optionsIcon, {24, 24}, "Options", this);
+        optionsButton->setFixedSize(36, 36);
 
-    // OUTER OBJECTS INIT
-    this->m_layout->addStretch();
+        QPushButton::connect(optionsButton, &QPushButton::clicked, this, &MainScreen::onOptionsButtonClicked);
 
-    this->m_layout->addLayout(this->m_toolbar);
-  }
+        this->m_toolbar->addWidget(versionLabel);
+        this->m_toolbar->addWidget(optionsButton);
+        this->m_toolbar->addWidget(aboutButton);
 
-  void MainScreen::onAboutButtonClicked() {
-    this->m_app->window().switchScreen(LodestoneWindow::ScreenIndex::ABOUT_SCREEN);
-  }
+        // OUTER OBJECTS INIT
+        this->m_layout->addStretch();
+
+        this->m_layout->addLayout(this->m_toolbar);
+    }
+
+    void MainScreen::onAboutButtonClicked() {
+        this->m_app->window().switchScreen(LodestoneWindow::ScreenIndex::ABOUT_SCREEN);
+    }
+
+    void MainScreen::onOptionsButtonClicked() {
+        this->m_app->window().switchScreen(LodestoneWindow::ScreenIndex::OPTIONS_SCREEN);
+    }
 }

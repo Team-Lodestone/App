@@ -13,21 +13,23 @@
 #include <QWidget>
 
 namespace lodestone::app {
-  class LodestoneApp;
+    class LodestoneApp;
 }
 
 namespace lodestone::app::gui::screen::screens {
-  class MainScreen : public screen::Screen {
-  public:
-      explicit MainScreen(LodestoneApp *app, QWidget *parent = nullptr);
+    class MainScreen : public screen::Screen {
+    public:
+        explicit MainScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
-  private slots:
-    void onAboutButtonClicked();
+    private slots:
+        void onAboutButtonClicked();
 
-  private:
-    QVBoxLayout *m_layout;
-    QHBoxLayout *m_toolbar;
-  };
+        void onOptionsButtonClicked();
+
+    private:
+        QVBoxLayout *m_layout;
+        QHBoxLayout *m_toolbar;
+    };
 }
 
 #endif // LODESTONE_MAINSCREEN_H

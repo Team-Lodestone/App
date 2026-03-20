@@ -124,6 +124,24 @@ jobs:
         run: |
           echo "C:\ProgramData\mingw64\mingw64\bin" >> "$GITHUB_PATH"
 
+      - name: Add compiler tools to ENV (Windows, GCC)
+        if: (matrix.os == 'windows-latest') && matrix.c_compiler == 'gcc'
+        run: |
+          echo 'LDFLAGS="-LC:\ProgramData\mingw64\mingw64\lib"' >> $GITHUB_ENV
+          && echo 'CPPFLAGS="-IC:\ProgramData\mingw64\mingw64\include"' >> $GITHUB_ENV
+          && echo 'CMAKE_PREFIX_PATH="C:\ProgramData\mingw64\mingw64\"' >> $GITHUB_ENV
+          && echo 'CC="C:\ProgramData\mingw64\mingw64\bin\gcc"' >> $GITHUB_ENV
+          && echo 'CXX="C:\ProgramData\mingw64\mingw64\bin\g++"' >> $GITHUB_ENV
+
+      - name: Add compiler tools to ENV (Windows, Clang)
+        if: (matrix.os == 'windows-latest') && matrix.c_compiler == 'clang-22'
+        run: |
+          echo 'LDFLAGS="-LC:\ProgramData\mingw64\mingw64\lib"' >> $GITHUB_ENV
+          && echo 'CPPFLAGS="-IC:\ProgramData\mingw64\mingw64\include"' >> $GITHUB_ENV
+          && echo 'CMAKE_PREFIX_PATH="C:\ProgramData\mingw64\mingw64\"' >> $GITHUB_ENV
+          && echo 'CC="C:\ProgramData\mingw64\mingw64\bin\clang"' >> $GITHUB_ENV
+          && echo 'CXX="C:\ProgramData\mingw64\mingw64\bin\clang++"' >> $GITHUB_ENV
+
       - name: Install latest GCC (Linux)
         if: (matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm') && matrix.c_compiler == 'gcc'
         uses: egor-tensin/setup-gcc@v2

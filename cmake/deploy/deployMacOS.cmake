@@ -1,24 +1,3 @@
-set_target_properties(Lodestone.App PROPERTIES
-        MACOSX_BUNDLE TRUE
-
-        MACOSX_BUNDLE_BUNDLE_NAME "Project Lodestone"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
-
-        MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
-)
-
-if (DEFINED PROJECT_VERSION_DEV)
-    set_target_properties(Lodestone.App PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-            MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}
-    )
-else ()
-    set_target_properties(Lodestone.App PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-            MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
-    )
-endif ()
-
 install(TARGETS Lodestone.App
         Lodestone.Level
         Lodestone.Conversion

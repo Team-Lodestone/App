@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 15) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 16) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -44,6 +44,30 @@ target_include_directories(Lodestone.App
 set_target_properties(Lodestone.App PROPERTIES
         OUTPUT_NAME "Lodestone"
 )
+
+if (APPLE)
+    set_target_properties(Lodestone.App PROPERTIES
+            MACOSX_BUNDLE TRUE
+
+            MACOSX_BUNDLE_ICON_FILE "Lodestone.icns"
+            MACOSX_BUNDLE_BUNDLE_NAME "Project Lodestone"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
+
+            MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
+    )
+
+    if (DEFINED PROJECT_VERSION_DEV)
+        set_target_properties(Lodestone.App PROPERTIES
+                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}
+        )
+    else ()
+        set_target_properties(Lodestone.App PROPERTIES
+                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
+        )
+    endif ()
+endif()
 
 if (WIN32)
     set(ICON "${CMAKE_CURRENT_SOURCE_DIR}/rsrc/assets/icons/icon.ico")

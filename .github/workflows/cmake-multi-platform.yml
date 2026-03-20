@@ -109,23 +109,15 @@ jobs:
             compiler: clang
             c_compiler: clang
             cpp_compiler: clang++
-#        exclude:
-#          - os: windows-latest
-#            c_compiler: gcc
-#          - os: windows-latest
-#            c_compiler: clang-19
-#          - os: windows-11-arm
-#            c_compiler: gcc
-#          - os: windows-11-arm
-#            c_compiler: clang-19
-#          - os: ubuntu-latest
-#            c_compiler: cl
-#          - os: ubuntu-24.04-arm
-#            c_compiler: cl
-#          - os: macos-latest
-#            c_compiler: cl
-#          - os: macos-26-intel
-#            c_compiler: cl
+        exclude:
+          - os: windows-latest
+            compiler: appleclang
+          - os: windows-11-arm
+            compiler: appleclang
+          - os: ubuntu-latest
+            compiler: appleclang
+          - os: ubuntu-24.04-arm
+            compiler: appleclang
 
     steps:
       - uses: actions/checkout@v4

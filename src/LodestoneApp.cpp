@@ -36,6 +36,8 @@ namespace lodestone::app {
         QCoreApplication::setOrganizationName("Team Lodestone");
         QCoreApplication::setApplicationName("Project Lodestone");
         QCoreApplication::setApplicationVersion(QString::fromUtf8(LodestoneApp::VERSION.toVersionString()));
+        QGuiApplication::setWindowIcon(QIcon(":/assets/icons/icon.ico"));
+        QGuiApplication::setDesktopFileName("Lodestone");
 
         //init filesystem garbage
         std::array<std::filesystem::path, 2> requiredDirectories = {{

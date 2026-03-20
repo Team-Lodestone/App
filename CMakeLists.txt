@@ -1,49 +1,72 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 12) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 13) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-file(GLOB_RECURSE FILES CONFIGURE_DEPENDS
+set(GLOB_PATHS
         "include/*.h"
         "src/*.cpp"
         "rsrc/*.rc"
+        "rsrc/*.qrc"
 )
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent)
-qt_standard_project_setup()
-
-if (NOT TARGET Lodestone.Core)
-    include(FetchContent)
-    FetchContent_Declare(
-            libLodestone
-            GIT_REPOSITORY https://github.com/Team-Lodestone/libLodestone.git
-            GIT_TAG main
-            GIT_SHALLOW TRUE
+if (WIN32)
+    list(APPEND GLOB_PATHS
+            "rsrc/windows/*.rc"
+            "rsrc/windows/*.h"
+            "${CMAKE_CURRENT_BINARY_DIR}/platform/windows/*.rc" #preprocessor
     )
 
-    FetchContent_MakeAvailable(libLodestone)
+    set(ICON "${CMAKE_CURRENT_SOURCE_DIR}/rsrc/assets/icons/icon.ico")
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rsrc/windows/icon.rc.in
+            ${CMAKE_CURRENT_BINARY_DIR}/platform/windows/icon.rc
+            @ONLY
+    )
 endif ()
 
-include(FetchContent)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+file(GLOB_RECURSE FILES CONFIGURE_DEPENDS ${GLOB_PATHS})
 
-FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
-FetchContent_MakeAvailable(json)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/fetchDeps.cmake)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent DBus)
+qt_standard_project_setup()
+set(CMAKE_AUTORCC ON)
 
 qt_add_executable(Lodestone.App ${FILES})
-
-if (WIN32)
-    target_link_libraries(Lodestone.App PRIVATE "-lstdc++exp")
-endif ()
 
 target_include_directories(Lodestone.App
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+
 set_target_properties(Lodestone.App PROPERTIES
         OUTPUT_NAME "Lodestone"
 )
+
+if (WIN32)
+    set(ICON "${CMAKE_CURRENT_SOURCE_DIR}/rsrc/assets/icons/icon.ico")
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/rsrc/windows/icon.rc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/icon.rc
+        @ONLY
+    )
+    
+    target_link_libraries(Lodestone.App PRIVATE "-lstdc++exp")
+    set_target_properties(Lodestone.App PROPERTIES
+            WIN32_EXECUTABLE TRUE
+    )
+
+    if (DEFINED PROJECT_VERSION_DEV)
+        target_compile_definitions(Lodestone.App PROPERTIES
+                LODESTONE_APP_RC_VERSION="${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}"
+        )
+    else ()
+        target_compile_definitions(Lodestone.App PROPERTIES
+                LODESTONE_APP_RC_VERSION="${PROJECT_VERSION}"
+        )
+    endif ()
+endif ()
 
 target_link_libraries(Lodestone.App PUBLIC
         Lodestone.Level
@@ -52,6 +75,8 @@ target_link_libraries(Lodestone.App PUBLIC
         nbt++
         nlohmann_json
         bio-cpp20
+
+        Qt6::DBus # macos implodes without this
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
@@ -73,100 +98,7 @@ foreach (k IN LISTS VERSIONS)
     endif ()
 endforeach ()
 
-set(PRECOMPILED_EXTENSIONS
-        Lodestone.Minecraft.Java
-        Lodestone.Minecraft.Console
-)
-
-foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
-    add_dependencies(Lodestone.App ${ext})
-
-    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extensions)
-    add_custom_command(TARGET Lodestone.App POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-            $<TARGET_FILE:${ext}>
-            ${CMAKE_CURRENT_BINARY_DIR}/extensions
-    )
-endforeach ()
-
-if (APPLE)
-    set_target_properties(Lodestone.App PROPERTIES
-            MACOSX_BUNDLE TRUE
-
-            MACOSX_BUNDLE_BUNDLE_NAME "Project Lodestone"
-            MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.team-lodestone.LodestoneApp"
-
-            MACOSX_BUNDLE_COPYRIGHT "Team Lodestone, Dexrn ZacAttack"
-    )
-
-    if (DEFINED PROJECT_VERSION_DEV)
-        set_target_properties(Lodestone.App PROPERTIES
-                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}-dev.${PROJECT_VERSION_DEV}
-        )
-    else ()
-        set_target_properties(Lodestone.App PROPERTIES
-                MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-                MACOSX_BUNDLE_BUNDLE_VERSION_STRING ${PROJECT_VERSION}
-        )
-    endif ()
-
-    install(TARGETS Lodestone.App
-            Lodestone.Level
-            Lodestone.Conversion
-            Lodestone.Core
-            nbt++
-            nlohmann_json
-            bio-cpp20
-            LIBRARY DESTINATION Lodestone.App.app/Contents/Frameworks
-            BUNDLE DESTINATION .
-    )
-
-    # we can't really add extensions into the binary I don't think
-    # todo we should use qt's path garbage for this and provide a setting for it, then force it to use the appdata dir on macos
-    #    foreach(ext IN LISTS PRECOMPILED_EXTENSIONS)
-    #        install(TARGETS ${ext}
-    #                LIBRARY DESTINATION Contents/Frameworks)
-    #    endforeach ()
-
-    set(executable_path "Lodestone.app")
-else ()
-    if (WIN32)
-        set_target_properties(Lodestone.App PROPERTIES
-                WIN32_EXECUTABLE TRUE
-        )
-    endif ()
-
-    install(TARGETS Lodestone.App
-            Lodestone.Level
-            Lodestone.Conversion
-            Lodestone.Core
-            nbt++
-            nlohmann_json
-            bio-cpp20
-            BUNDLE DESTINATION .
-    )
-
-    foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
-        install(TARGETS ${ext}
-                LIBRARY DESTINATION bin/extensions)
-    endforeach ()
-
-    set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")
-endif ()
-
-if (APPLE OR WIN32)
-    qt_generate_deploy_script(
-            TARGET Lodestone.App
-            OUTPUT_SCRIPT deploy_script
-            CONTENT "
-    qt_deploy_runtime_dependencies(
-        EXECUTABLE \"${executable_path}\"
-        GENERATE_QT_CONF
-        VERBOSE
-    )")
-
-    install(SCRIPT "${deploy_script}")
-endif ()
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/precompile.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/deploy/deploy.cmake)
 
 setupLinter(Lodestone.App)

@@ -1,0 +1,7 @@
+if (APPLE)
+    include(${CMAKE_CURRENT_LIST_DIR}/deployMacOS.cmake)
+elseif (WIN32)
+    include(${CMAKE_CURRENT_LIST_DIR}/deployWindows.cmake)
+elseif (UNIX)
+    include(${CMAKE_CURRENT_LIST_DIR}/deployLinux.cmake)
+endif ()

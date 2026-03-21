@@ -27,6 +27,7 @@ namespace lodestone::app::options::manager {
         f.exceptions(std::ios::failbit | std::ios::badbit);
 
         this->m_options = Options::fromJson(f);
+        this->m_options.registerGuiOptions(); // I do not know why, but putting it in Options::fromDefault causes a segfault when trying to call the getters and setters.
 
         this->optionsLoadedEvent.notify();
     }

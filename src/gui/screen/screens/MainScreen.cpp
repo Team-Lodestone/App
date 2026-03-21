@@ -33,6 +33,21 @@ namespace lodestone::app::gui::screen::screens {
         //INNER OBJECTS INIT
         innerLayout->addWidget(new widgets::TitleWidget());
 
+        const QIcon conversionIcon = QIcon::fromTheme("sync-synchronizing");
+        QPushButton *conversionButton = (new widgets::OpenTabButton(
+            &this->m_app->window(),
+            [this] {
+                return this->m_app->window().aboutScreen;
+            },
+        this
+        ))
+        ->withIcon(conversionIcon)
+        ->withTooltip("Edit and/or convert a world from one format to another")
+        ->withText("Load world");
+        conversionButton->setDisabled(true); // until time to impl
+
+        innerLayout->addWidget(conversionButton);
+
         // TOOLBAR INIT
         this->m_toolbar = new QHBoxLayout(this);
 

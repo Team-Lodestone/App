@@ -9,20 +9,16 @@
 
 #include "Lodestone.App/LodestoneApp.h"
 #include "Lodestone.App/gui/options/GuiOptionRegistry.h"
+#include "Lodestone.App/gui/options/types/PathGuiOption.h"
 #include "Lodestone.App/util/Environment.h"
 
 #include <qcoreapplication.h>
 #include <QStandardPaths>
+#include <iostream>
 
 namespace lodestone::app {
     Options::Options() {
-#ifndef __APPLE__
-        this->extensionsPath = util::Environment::getCurrentDirectory() / "extensions";
-#else
         this->extensionsPath = util::Environment::getStorageDirectory() / "extensions";
-#endif
-
-        this->registerGuiOptions();
     }
 
     Options Options::fromJson(const nlohmann::json &json) {
@@ -54,8 +50,9 @@ namespace lodestone::app {
 
     void Options::registerGuiOptions() {
         this->m_guiOptions.putOption(common::registry::Identifier {"lodestone", "app/options/extension_directory"},
-                new gui::option::GuiOption<std::filesystem::path> {
+                new gui::option::types::PathGuiOption {
                     "Extensions Directory",
+                    "The directory to look in for extensions\nRequires restart to apply.",
                     [this]() -> std::filesystem::path {
                         return this->extensionsPath;
                     },
@@ -63,7 +60,10 @@ namespace lodestone::app {
                         this->extensionsPath = value;
                     },
                     {
-                        std::filesystem::path("placeholder")
+                        util::Environment::getStorageDirectory() / "extensions",
+                        #ifndef __APPLE__
+                            util::Environment::getCurrentDirectory() / "extensions"
+                        #endif
                     }
                 }
         );

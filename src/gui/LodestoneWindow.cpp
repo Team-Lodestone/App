@@ -20,6 +20,7 @@ namespace lodestone::app::gui {
     LodestoneWindow::LodestoneWindow(LodestoneApp *app, QWidget *parent) : QMainWindow(parent), m_app(app) {
         this->m_tabs = new QTabWidget(this);
         this->m_tabs->setTabsClosable(true);
+        this->m_tabs->setTabBarAutoHide(true);
         this->m_tabs->connect(this->m_tabs, &QTabWidget::tabCloseRequested, this, [this](const int idx) {
             if (idx == 0) { //never close the main tab
                 return;

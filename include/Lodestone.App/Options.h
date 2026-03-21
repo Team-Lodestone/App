@@ -14,9 +14,9 @@
 
 namespace lodestone::app {
     class Options {
-    public:
+    protected:
         Options();
-
+    public:
         static Options fromJson(const nlohmann::json &json);
         static Options fromJson(std::istream &stream);
 
@@ -36,10 +36,8 @@ namespace lodestone::app {
         template <typename T>
         static void set(const nlohmann::json &json, const std::string &key, std::function<void(T)> predicate, T fallback) {
             for (auto it = json.find(key); it != json.end(); ++it) {
-                if (typeid(it.value().type()) == typeid(T)) {
-                    predicate(static_cast<T>(it.value()));
-                    return;
-                }
+                predicate(static_cast<T>(it.value()));
+                return;
             }
 
             predicate(fallback);
@@ -47,20 +45,30 @@ namespace lodestone::app {
 
         template <typename T>
         static void setIfNonNull(const nlohmann::json &json, const std::string &key, std::function<void(T)> predicate) {
-            for (auto it = json.find(key); it != json.end(); ++it) {
-                if (typeid(it.value().type()) == typeid(T)) {
-                    predicate(static_cast<T>(it.value()));
-                }
+            if (!json.contains(key)) {
+                return;
             }
+
+            const auto &v = json.at(key);
+            if (v.is_null()) {
+                return;
+            }
+
+            predicate(v.get<T>());
         }
 
         template <typename T>
         void setIfNonNull(const nlohmann::json &json, const std::string &key, T &output) const {
-            for (auto it = json.find(key); it != json.end(); ++it) {
-                if (typeid(it.value().type()) == typeid(T)) {
-                    this->setIfNonNull<T>(it.value().get<T>(), output);
-                }
+            if (!json.contains(key)) {
+                return;
             }
+
+            const auto &v = json.at(key);
+            if (v.is_null()) {
+                return;
+            }
+
+            this->setIfNonNull(v.get<T>(), output);
         }
 
         template <typename T>

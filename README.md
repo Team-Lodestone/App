@@ -7,3 +7,4 @@ Uses [libLodestone](https://github.com/Team-Lodestone/libLodestone) internally.
 - [ ] Allow for exporting worlds, levels, chunks, etc
   - [ ] Allow for exporting e.g. a Level as a World. 
   - This is how we will achieve user facing world conversion.
+- [ ] Translations

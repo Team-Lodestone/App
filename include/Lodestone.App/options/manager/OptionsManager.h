@@ -26,7 +26,7 @@ namespace lodestone::app::options::manager {
         common::event::Event<> optionsLoadedEvent;
         common::event::Event<> optionsSavedEvent;
     protected:
-        Options m_options;
+        Options m_options = Options::fromDefault();
     };
 }
 

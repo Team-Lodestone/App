@@ -17,7 +17,9 @@ namespace lodestone::app::gui::option {
 
     class IGuiOption {
     public:
-        explicit constexpr IGuiOption(const std::string &name) : m_displayName(name) {};
+        virtual ~IGuiOption() = default;
+
+        explicit constexpr IGuiOption(const std::string &name, const std::string &description) : m_displayName(name), m_description(description) {};
 
         template <typename T> GuiOption<T> *asOptionType() {
             return dynamic_cast<GuiOption<T> *>(this);
@@ -27,19 +29,21 @@ namespace lodestone::app::gui::option {
             return this->m_displayName;
         }
 
-        // virtual QWidget *getWidget() = 0;
+        const std::string &description() const {
+            return this->m_description;
+        }
+
+        virtual QWidget *getWidget(QWidget *parent = nullptr) = 0;
 
     protected:
         const std::string m_displayName;
+        const std::string m_description;
     };
 
-    //TODO for tomorrow: keep getWidget pure, instantiate per type we want to implement our options widget for
-    // so I can implement for T = std::string as a textbox
-    // and then move initializer_list there
     template <typename T>
     class GuiOption : public IGuiOption {
     public:
-        constexpr GuiOption(const std::string &name, std::function<T()> getter, std::function<void(T)> setter, std::initializer_list<T> presets = {}) : IGuiOption(name), m_getter(getter), m_setter(setter), m_presets(presets) {}
+        constexpr GuiOption(const std::string &name, const std::string &description, std::function<T()> getter, std::function<void(T)> setter) : IGuiOption(name, description), m_getter(getter), m_setter(setter) {}
 
         T operator()() {
             return this->get();
@@ -57,13 +61,20 @@ namespace lodestone::app::gui::option {
             this->m_setter(value);
         }
 
-        const std::vector<T> &presets() const {
-            return this->m_presets;
-        }
-
     private:
         const std::function<T()> m_getter;
         const std::function<void(T)> m_setter;
+    };
+
+    template <typename T>
+    class GuiOptionWithPresets : public GuiOption<T> {
+    public:
+        constexpr GuiOptionWithPresets(const std::string &name, const std::string &description, const std::function<T()> &getter, const std::function<void(T)> &setter, const std::initializer_list<T> &presets) : GuiOption<T>(name, description, getter, setter), m_presets(presets) {}
+
+        const std::vector<T> &presets() const {
+            return this->m_presets;
+        }
+    protected:
         const std::vector<T> m_presets;
     };
 }

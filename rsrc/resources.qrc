@@ -14,5 +14,6 @@
         <file>assets/icons/icon_256x256@2x.png</file>
         <file>assets/icons/icon_512x512.png</file>
         <file>assets/icons/icon_512x512@2x.png</file>
+        <file>qt/main.qss</file>
     </qresource>
 </RCC>

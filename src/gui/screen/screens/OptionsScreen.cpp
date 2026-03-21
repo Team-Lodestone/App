@@ -18,18 +18,13 @@ namespace lodestone::app::gui::screen::screens {
         // LAYOUT INIT
         this->m_layout = new QVBoxLayout();
         this->m_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-
-        this->m_layout->setContentsMargins(0, 0, 0, 0);
-        this->m_layout->setSpacing(0);
+        this->m_layout->setSpacing(10);
 
         //CHILDREN INIT
-        // TODO this should be DYNAMIC
-        // or we should be able to properly sync with app->options()
         std::ranges::for_each(app->options().guiOptions().registeredOptions(), [this](const auto &p) {
             auto &[id, option] = p;
 
-            this->m_layout->addWidget(new QLabel(QString::fromStdString(id.getString())));
-            this->m_layout->addWidget(new QLabel(QString::fromStdString(option->displayName())));
+            this->m_layout->addWidget(option->getWidget());
         });
 
         this->setLayout(this->m_layout);

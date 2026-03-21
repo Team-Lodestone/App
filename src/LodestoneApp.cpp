@@ -75,7 +75,7 @@ namespace lodestone::app {
     }
 
     void LodestoneApp::run() {
-        this->m_window.setFixedSize(800, 600);
+        this->m_window.resize(800, 600);
         this->m_window.show();
 
         this->m_application.exec();

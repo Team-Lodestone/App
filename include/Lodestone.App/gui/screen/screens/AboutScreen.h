@@ -27,10 +27,11 @@ namespace lodestone::app::gui::screen::screens {
   public:
       explicit AboutScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
+      QString getTitle() override;
+      std::optional<QIcon> getIcon() override;
+
   public slots:
     void onExtensionRegistered(const lodestone::core::LodestoneExtension *ext) const;
-
-    void onBackButtonClicked();
 
   private:
     QVBoxLayout *m_layout;

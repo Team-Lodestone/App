@@ -34,4 +34,12 @@ namespace lodestone::app::gui::screen::screens {
 
         this->setLayout(this->m_layout);
     }
+
+    QString OptionsScreen::getTitle() {
+        return "Options";
+    }
+
+    std::optional<QIcon> OptionsScreen::getIcon() {
+        return QIcon::fromTheme("configure");
+    }
 }

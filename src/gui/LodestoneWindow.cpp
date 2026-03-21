@@ -17,17 +17,37 @@
 #include "Lodestone.App/gui/screen/screens/OptionsScreen.h"
 
 namespace lodestone::app::gui {
-  LodestoneWindow::LodestoneWindow(LodestoneApp* app, QWidget* parent) : QMainWindow(parent), m_app(app) {
-    this->m_screens = new QStackedWidget(this);
+    LodestoneWindow::LodestoneWindow(LodestoneApp *app, QWidget *parent) : QMainWindow(parent), m_app(app) {
+        this->m_tabs = new QTabWidget(this);
+        this->m_tabs->setTabsClosable(true);
+        this->m_tabs->connect(this->m_tabs, &QTabWidget::tabCloseRequested, this, [this](const int idx) {
+            if (idx == 0) { //never close the main tab
+                return;
+            }
 
-    this->m_mainScreen = new screen::screens::MainScreen(app, this->m_screens);
-    this->m_aboutScreen = new screen::screens::AboutScreen(app, this->m_screens);
-    this->m_optionsScreen = nullptr;
+            this->m_tabs->removeTab(idx);
+        });
 
-    this->m_screens->insertWidget(static_cast<int>(ScreenIndex::MAIN_SCREEN), this->m_mainScreen);
-    this->m_screens->insertWidget(static_cast<int>(ScreenIndex::ABOUT_SCREEN), this->m_aboutScreen);
+        this->mainScreen = new screen::screens::MainScreen(app);
+        this->aboutScreen = new screen::screens::AboutScreen(app);
 
-    this->switchScreen(ScreenIndex::MAIN_SCREEN);
-    this->setCentralWidget(this->m_screens);
-  }
+        this->addTab(mainScreen);
+        this->setCentralWidget(this->m_tabs);
+    }
+
+    // TODO create wrapper class for Screen * to hold tab attributes
+    int LodestoneWindow::addTab(screen::Screen *screen, const bool switchTo) const {
+        const int t = this->m_tabs->addTab(screen, screen->getTitle());
+
+        const std::optional<QIcon> icon = screen->getIcon();
+        if (icon.has_value() && !icon.value().isNull()) {
+            this->m_tabs->setTabIcon(t, icon.value());
+        }
+
+        if (switchTo) {
+            this->switchTab(t);
+        }
+
+        return t;
+    }
 }

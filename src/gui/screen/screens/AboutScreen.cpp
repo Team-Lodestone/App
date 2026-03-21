@@ -17,7 +17,6 @@
 #include <print>
 
 #include "Lodestone.App/LodestoneApp.h"
-#include "Lodestone.App/gui/qt/variant/QPushButtonVariantFactory.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 #include "Lodestone.Common/LodestoneCommon.h"
 
@@ -50,16 +49,16 @@ namespace lodestone::app::gui::screen::screens {
         this->m_layout->addWidget(registeredExtensionsContainer);
 
         //OUTER INIT
-
-        const QIcon backIcon = QApplication::style()->standardIcon(QStyle::SP_ArrowLeft);
-        QPushButton *backButton = qt::variant::QPushButtonVariantFactory::createWithIcon(backIcon, {24, 24}, "Go back", this);
-
-        QPushButton::connect(backButton, &QPushButton::clicked, this, &AboutScreen::onBackButtonClicked);
-        backButton->show();
-        backButton->move(5, 5);
-
         const auto libVersionLabel = new QLabel("libLodestone v" + QString::fromUtf8(lodestone::common::lodestone_get_version_string()));
         outer->addWidget(libVersionLabel, 0, Qt::AlignLeft | Qt::AlignBottom);
+    }
+
+    QString AboutScreen::getTitle() {
+        return "About";
+    }
+
+    std::optional<QIcon> AboutScreen::getIcon() {
+        return QIcon::fromTheme("help-about");
     }
 
     void AboutScreen::onExtensionRegistered(const core::LodestoneExtension *ext) const {
@@ -70,9 +69,5 @@ namespace lodestone::app::gui::screen::screens {
                     )
                 )
             );
-    }
-
-    void AboutScreen::onBackButtonClicked() {
-        this->m_app->window().switchToPreviousScreen();
     }
 }

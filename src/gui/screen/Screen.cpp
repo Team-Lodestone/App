@@ -9,4 +9,8 @@
 
 namespace lodestone::app::gui::screen {
     Screen::Screen(LodestoneApp *app, QWidget *parent) : QWidget(parent), m_app(app) {}
+
+    std::optional<QIcon> Screen::getIcon() {
+        return std::nullopt;
+    }
 }

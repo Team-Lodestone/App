@@ -11,7 +11,8 @@
 #include <QPushButton>
 
 #include "Lodestone.App/LodestoneApp.h"
-#include "Lodestone.App/gui/qt/variant/QPushButtonVariantFactory.h"
+#include "Lodestone.App/gui/screen/screens/AboutScreen.h"
+#include "Lodestone.App/gui/widgets/OpenTabButton.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
 
 #include <qicon.h>
@@ -40,16 +41,22 @@ namespace lodestone::app::gui::screen::screens {
         versionLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
 
         const QIcon aboutIcon = QIcon::fromTheme("help-about");
-        QPushButton *aboutButton = qt::variant::QPushButtonVariantFactory::createWithIcon(aboutIcon, {24, 24}, "About", this);
-        aboutButton->setFixedSize(36, 36);
-
-        QPushButton::connect(aboutButton, &QPushButton::clicked, this, &MainScreen::onAboutButtonClicked);
+        QPushButton *aboutButton = (new widgets::OpenTabButton(
+            &this->m_app->window(),
+            [this] {
+                return this->m_app->window().aboutScreen;
+            },
+        this
+        ))->withIcon(aboutIcon)->withIconSize({24, 24})->withTooltip("About")->withFixedSize({36, 36});
 
         const QIcon optionsIcon = QIcon::fromTheme("configure");
-        QPushButton *optionsButton = qt::variant::QPushButtonVariantFactory::createWithIcon(optionsIcon, {24, 24}, "Options", this);
-        optionsButton->setFixedSize(36, 36);
-
-        QPushButton::connect(optionsButton, &QPushButton::clicked, this, &MainScreen::onOptionsButtonClicked);
+        QPushButton *optionsButton = (new widgets::OpenTabButton(
+            &this->m_app->window(),
+            [this] {
+                return new OptionsScreen(this->m_app);
+            },
+        this
+        ))->withIcon(optionsIcon)->withIconSize({24, 24})->withTooltip("Options")->withFixedSize({36, 36});
 
         this->m_toolbar->addWidget(versionLabel);
         this->m_toolbar->addWidget(optionsButton);
@@ -61,11 +68,7 @@ namespace lodestone::app::gui::screen::screens {
         this->m_layout->addLayout(this->m_toolbar);
     }
 
-    void MainScreen::onAboutButtonClicked() {
-        this->m_app->window().switchScreen(LodestoneWindow::ScreenIndex::ABOUT_SCREEN);
-    }
-
-    void MainScreen::onOptionsButtonClicked() {
-        this->m_app->window().switchScreen(LodestoneWindow::ScreenIndex::OPTIONS_SCREEN);
+    QString MainScreen::getTitle() {
+        return "Lodestone";
     }
 }

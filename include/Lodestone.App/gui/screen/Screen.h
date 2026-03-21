@@ -20,7 +20,11 @@ namespace lodestone::app::gui::screen {
 
     protected:
         explicit Screen(LodestoneApp *app, QWidget *parent = nullptr);
+    public:
+        virtual std::optional<QIcon> getIcon();
+        virtual QString getTitle() = 0;
 
+    protected:
         LodestoneApp *m_app;
     };
 }

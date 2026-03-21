@@ -21,10 +21,7 @@ namespace lodestone::app::gui::screen::screens {
     public:
         explicit MainScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
-    private slots:
-        void onAboutButtonClicked();
-
-        void onOptionsButtonClicked();
+        QString getTitle() override;
 
     private:
         QVBoxLayout *m_layout;

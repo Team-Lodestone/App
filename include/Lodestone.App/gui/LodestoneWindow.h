@@ -36,62 +36,26 @@ namespace lodestone::app::gui {
     public:
         explicit LodestoneWindow(LodestoneApp *app, QWidget *parent = nullptr);
 
-        enum class ScreenIndex : int {
-            MAIN_SCREEN,
-            ABOUT_SCREEN,
-            OPTIONS_SCREEN
-        };
-
-        [[nodiscard]] screen::Screen *currentScreenElement() const {
-            return static_cast<screen::Screen *>(this->m_screens->currentWidget());
+        [[nodiscard]] screen::Screen *currentTabElement() const {
+            return static_cast<screen::Screen *>(this->m_tabs->currentWidget());
         }
 
-        [[nodiscard]] ScreenIndex currentScreen() const {
-            return static_cast<ScreenIndex>(this->m_screens->currentIndex());
+        [[nodiscard]] int currentTab() const {
+            return this->m_tabs->currentIndex();
         }
 
-        void switchScreen(const ScreenIndex idx) {
-            if (this->currentScreenElement() != nullptr)
-                m_previousScreens.push(this->currentScreenElement());
-
-            if (idx == ScreenIndex::OPTIONS_SCREEN) {
-                // TODO TODO TODO VERY TEMPORARY
-                // we will switch to tabbed interface, and then handle screen instances there.
-                // this is for testing and development of the options stuffs
-                this->m_optionsScreen = new screen::screens::OptionsScreen(this->m_app, this);
-                this->m_screens->insertWidget(static_cast<int>(ScreenIndex::OPTIONS_SCREEN), this->m_optionsScreen);
-            }
-
-            this->m_screens->setCurrentIndex(static_cast<int>(idx));
+        void switchTab(const int idx) const {
+            this->m_tabs->setCurrentIndex(idx);
         }
 
-        void switchToPreviousScreen() {
-            if (this->m_previousScreens.empty())
-                return;
+        int addTab(screen::Screen *screen, bool switchTo = false) const;
 
-            QWidget *s = this->m_previousScreens.top();
-            this->m_previousScreens.pop();
-
-            //dont want to switch to some invalid screen
-            //this can cause issues especially when we'll want to have dynamically instanced screens
-            if (s == nullptr) {
-                this->switchToPreviousScreen();
-                return;
-            }
-
-            this->m_screens->setCurrentWidget(s);
-        }
-
+        screen::screens::MainScreen *mainScreen;
+        screen::screens::AboutScreen *aboutScreen;
     private:
         LodestoneApp *m_app;
 
-        screen::screens::MainScreen *m_mainScreen;
-        screen::screens::AboutScreen *m_aboutScreen;
-        screen::screens::OptionsScreen *m_optionsScreen;
-
-        std::stack<screen::Screen *> m_previousScreens;
-
-        QStackedWidget *m_screens;
+        QTabWidget *m_tabs;
     };
 }
 

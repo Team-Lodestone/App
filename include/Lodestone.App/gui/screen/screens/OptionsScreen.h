@@ -17,6 +17,9 @@ namespace lodestone::app::gui::screen::screens {
     public:
         explicit OptionsScreen(LodestoneApp *app, QWidget *parent = nullptr);
 
+        QString getTitle() override;
+        std::optional<QIcon> getIcon() override;
+
     private:
         QVBoxLayout *m_layout;
     };

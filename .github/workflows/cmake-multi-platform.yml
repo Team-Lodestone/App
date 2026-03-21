@@ -31,15 +31,15 @@ jobs:
             platform_name: Windows x86_64
             compiler_name: GCC
             compiler: gcc
-            c_compiler: C:/ProgramData/mingw64/mingw64/bin/gcc
-            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/g++
+            c_compiler: C:/ProgramData/mingw64/mingw64/bin/gcc.exe
+            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/g++.exe
             settings: -G Ninja
           - os: windows-latest
             platform_name: Windows x86_64
             compiler_name: Clang
             compiler: clang
-            c_compiler: C:/ProgramData/mingw64/mingw64/bin/clang
-            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/clang++
+            c_compiler: C:/ProgramData/mingw64/mingw64/bin/clang.exe
+            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/clang++.exe
             settings: -G Ninja
 #          - os: windows-11-arm
 #            platform_name: Windows AArch64

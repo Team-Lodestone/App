@@ -12,14 +12,9 @@ install(TARGETS Lodestone.App
 
 set(executable_path "Lodestone.app")
 
-qt_generate_deploy_script(
+qt_generate_deploy_app_script(
         TARGET Lodestone.App
         OUTPUT_SCRIPT deploy_script
-        CONTENT "
-    qt_deploy_runtime_dependencies(
-        EXECUTABLE \"${executable_path}\"
-        GENERATE_QT_CONF
-        VERBOSE
-    )")
+)
 
 install(SCRIPT "${deploy_script}")

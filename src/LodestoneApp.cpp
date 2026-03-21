@@ -41,7 +41,7 @@ namespace lodestone::app {
 #ifndef __APPLE__
         QGuiApplication::setWindowIcon(QIcon(":/assets/icons/icon.ico"));
 #endif
-        QGuiApplication::setDesktopFileName("Lodestone");
+        QGuiApplication::setDesktopFileName("io.github.team-lodestone.Lodestone");
 
         if (QFile stylesheet(":/qt/main.qss"); stylesheet.open(QFile::ReadOnly | QFile::Text)) {
             this->m_application.setStyleSheet(QString::fromUtf8(stylesheet.readAll()));

@@ -11,7 +11,7 @@ install(TARGETS Lodestone.App
 
 foreach (ext IN LISTS PRECOMPILED_EXTENSIONS)
     install(TARGETS ${ext}
-            LIBRARY DESTINATION bin/extensions)
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/extensions)
 endforeach ()
 
 set(executable_path "\${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:Lodestone.App>")

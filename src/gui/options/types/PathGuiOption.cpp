@@ -40,7 +40,7 @@ namespace lodestone::app::gui::option::types {
                 return;
             }
 
-            std::filesystem::path p = path.toStdString();
+            std::filesystem::path p = std::string(path.toUtf8()); //macos skill issue #2
             p.make_preferred();
 
             if (std::filesystem::exists(p) && !std::filesystem::is_directory(p)) {

@@ -31,14 +31,16 @@ jobs:
             platform_name: Windows x86_64
             compiler_name: GCC
             compiler: gcc
-            c_compiler: gcc
-            cpp_compiler: g++
+            c_compiler: C:/ProgramData/mingw64/mingw64/bin/gcc
+            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/g++
+            settings: -G Ninja
           - os: windows-latest
             platform_name: Windows x86_64
             compiler_name: Clang
             compiler: clang
-            c_compiler: clang
-            cpp_compiler: clang++
+            c_compiler: C:/ProgramData/mingw64/mingw64/bin/clang
+            cpp_compiler: C:/ProgramData/mingw64/mingw64/bin/clang++
+            settings: -G Ninja
 #          - os: windows-11-arm
 #            platform_name: Windows AArch64
 #            compiler_name: GCC
@@ -188,27 +190,12 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/cmake-build-${{ matrix.build_type }}-${{ matrix.c_compiler }}" >> "$GITHUB_OUTPUT"
 
-      - name: Configure CMake (non-Windows)
+      - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        if: (matrix.os != 'windows-latest')
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -S ${{ github.workspace }}
-          -DCMAKE_CXX_STANDARD=20
-          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          ${{ matrix.settings }}
-
-      - name: Configure CMake (Windows)
-        # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
-        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        if: (matrix.os == 'windows-latest')
-        run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -S ${{ github.workspace }}
-          -G Ninja
           -DCMAKE_CXX_STANDARD=20
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}

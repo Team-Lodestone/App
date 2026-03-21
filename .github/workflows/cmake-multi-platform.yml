@@ -31,15 +31,15 @@ jobs:
             platform_name: Windows x86_64
             compiler_name: GCC
             compiler: gcc
-            c_compiler: gcc.exe
-            cpp_compiler: g++.exe
+            c_compiler: gcc
+            cpp_compiler: g++
             settings: -G "MinGW Makefiles"
           - os: windows-latest
             platform_name: Windows x86_64
             compiler_name: Clang
             compiler: clang
-            c_compiler: clang.exe
-            cpp_compiler: clang++.exe
+            c_compiler: clang
+            cpp_compiler: clang++
             settings: -G "MinGW Makefiles"
 #          - os: windows-11-arm
 #            platform_name: Windows AArch64
@@ -132,9 +132,9 @@ jobs:
         with:
           version: '6.10.2'
 
-      - name: Install MinGW (Windows)
-        if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
-        uses: egor-tensin/setup-mingw@v3
+#      - name: Install MinGW (Windows)
+#        if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'
+#        uses: egor-tensin/setup-mingw@v3
 
       - name: Install Qt (Windows, NON-MSVC)
         if: (matrix.os == 'windows-latest') && matrix.compiler != 'msvc'

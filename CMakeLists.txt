@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 24) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 25) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -39,7 +39,11 @@ file(GLOB_RECURSE FILES CONFIGURE_DEPENDS ${GLOB_PATHS})
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/fetchDeps.cmake)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent DBus)
+if (EMSCRIPTEN)
+    find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent)
+else()
+    find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui Concurrent DBus)
+endif()
 qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
 
@@ -116,12 +120,16 @@ target_link_libraries(Lodestone.App PUBLIC
         nlohmann_json
         bio-cpp20
 
-        Qt6::DBus # macos implodes without this
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
         Qt6::Concurrent
 )
+if (NOT EMSCRIPTEN)
+    target_link_libraries(Lodestone.App PUBLIC
+        Qt6::DBus # macos implodes without this
+    )
+endif()
 
 set(VERSIONS
         MAJOR

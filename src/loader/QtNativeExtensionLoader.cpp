@@ -43,7 +43,7 @@ void QtNativeExtensionLoader::load() {
         auto pluginLoader = std::make_unique<QPluginLoader>(filePath);
         if (const auto instance = pluginLoader->instance()) {
             if (auto *extension = qobject_cast<LodestoneAppExtension *>(instance); extension) {
-                QJsonObject metadata = pluginLoader->metaData();
+                QJsonObject metadata = pluginLoader->metaData().value("MetaData").toObject();
                 QString pluginId = metadata.value("Id").toString();
 
                 if (this->m_extensions.contains(pluginId)) {

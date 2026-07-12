@@ -1,0 +1,24 @@
+{
+  "Id": "Lodestone.App.LCE",
+  "Name": "Lodestone (Legacy Console Edition)",
+  "Version": "1.0.0",
+  "CompatVersion": "1.0.0",
+  "VendorId": "io.github.team-lodestone",
+  "Vendor": "Team Lodestone",
+  "Copyright": "(C) 2026 Team Lodestone",
+  "License": [
+
+  ],
+  "Category": "Extension",
+  "Description": [
+
+  ],
+  "Url": "https://team-lodestone.github.io",
+  "DocumentationUrl": "https://team-lodestone.github.io/Documentation/",
+  "Arguments": [
+
+  ],
+  "Dependencies": [
+
+  ]
+}

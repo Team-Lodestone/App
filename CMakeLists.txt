@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION VERSION 3.30)
 project(Lodestone.App VERSION 1.0.0)
-set(PROJECT_VERSION_DEV 25) # used for dev versions, otherwise blank
+set(PROJECT_VERSION_DEV 26) # used for dev versions, otherwise blank
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -48,6 +48,32 @@ qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
 
 qt_add_executable(Lodestone.App ${FILES})
+
+set_target_properties(Lodestone.App PROPERTIES ENABLE_EXPORTS TRUE)
+
+if(EMSCRIPTEN)
+    set_target_properties(Lodestone.App PROPERTIES
+            QT_PLUGINS "platforms;imageformats"
+    )
+
+    # TODO: Export only necessary functions to reduce binary size
+#    target_link_options(Lodestone.App PRIVATE
+#            "-sMAIN_MODULE=1"
+#            "-sEXPORT_ALL=1"
+#            "-sALLOW_TABLE_GROWTH=1"
+#            "-sSTRICT_JS=0"
+#            "-sDEFAULT_TO_CXX=1"
+#            "-sERROR_ON_UNDEFINED_SYMBOLS=0"
+#            "-sEXPORTED_FUNCTIONS=['__ZN18JsMediaInputStream21mediaVideoStreamReadyEv','_main']"
+#
+#            "-sALLOW_MEMORY_GROWTH=1"
+#            "-sINITIAL_MEMORY=8589934592"
+#
+#            #            "-Wl,--allow-multiple-definition"
+##            "-sWARN_ON_UNDEFINED_SYMBOLS=0"
+##            "-sERROR_ON_UNDEFINED_SYMBOLS=0"
+#    )
+endif()
 
 target_include_directories(Lodestone.App
         PUBLIC
@@ -113,9 +139,10 @@ if (WIN32)
 endif ()
 
 target_link_libraries(Lodestone.App PUBLIC
+        Lodestone.App.Core
         Lodestone.Level
-        Lodestone.Conversion
         Lodestone.Core
+        Lodestone.Conversion
         nbt++
         nlohmann_json
         bio-cpp20
@@ -148,5 +175,35 @@ endforeach ()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/precompile.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/deploy/deploy.cmake)
+
+add_subdirectory(plugins)
+
+if(EMSCRIPTEN)
+    target_link_options(Lodestone.App PRIVATE
+            -gsource-map
+    )
+
+    if(LODESTONE_APP_BUILD_JAVA_EXT)
+#        target_link_libraries(Lodestone.App PRIVATE
+#                "-Wl,--whole-archive"
+#                Lodestone.App.Java
+#                "-Wl,--no-whole-archive"
+#        )
+        target_link_libraries(Lodestone.App PRIVATE
+            Lodestone.App.Java
+        )
+    endif()
+
+    if(LODESTONE_APP_BUILD_LCE_EXT)
+#        target_link_libraries(Lodestone.App PRIVATE
+#                "-Wl,--whole-archive"
+#                Lodestone.App.LCE
+#                "-Wl,--no-whole-archive"
+#        )
+        target_link_libraries(Lodestone.App PRIVATE
+                Lodestone.App.LCE
+        )
+    endif()
+endif()
 
 setupLinter(Lodestone.App)

@@ -17,15 +17,30 @@
 #include <string>
 
 #include <BinaryIO/Exports.h>
-#include "Lodestone.Core/loader/NativeExtensionLoader.h"
 #include "Lodestone.Core/loader/ExtensionLoader.h"
 #include "Lodestone.Common/LodestoneCommon.h"
 #include "Lodestone.Common/event/Cancellable.h"
 
 #include <QMouseEvent>
 #include <QFile>
-#include <QStandardPaths>
 #include <fstream>
+#include "Lodestone.App/loader/QtNativeExtensionLoader.h"
+#include "Lodestone.Core/loader/StaticExtensionLoader.h"
+
+#ifdef __EMSCRIPTEN__
+
+// Import plugins statically
+#if LODESTONE_APP_BUILD_JAVA_EXT
+    #include "Lodestone.Minecraft.Java/LodestoneJava.h"
+    Q_IMPORT_PLUGIN(LodestoneJavaPlugin)
+#endif
+
+#if LODESTONE_APP_BUILD_LCE_EXT
+    #include "Lodestone.Minecraft.Console/LodestoneLce.h"
+    Q_IMPORT_PLUGIN(LodestoneLCEPlugin)
+#endif
+
+#endif
 
 namespace lodestone::app {
     LodestoneApp::LodestoneApp(int argc, char *argv[], core::Lodestone *core) : m_core(core), m_optionsManager(nullptr),
@@ -92,7 +107,31 @@ namespace lodestone::app {
     void LodestoneApp::loadExtensions() {
         std::print("== Loading extensions ==\n");
 
-        lodestone::core::loader::NativeExtensionLoader l(this->options().extensionsPath, this->m_core);
+        QtNativeExtensionLoader l(&this->m_application, this->options().extensionsPath, this->m_core);
+
+#ifdef __EMSCRIPTEN__
+        auto staticLoader = core::loader::StaticExtensionLoader(this->m_core);
+
+        staticLoader.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
+            std::println("Initializing extension '{}'", p.generic_string());
+        };
+
+        staticLoader.extensionLoadedEvent += [this](const core::LodestoneExtension *ext) {
+            std::println("Initialized extension '{}' {}", ext->getIdentifier(), ext->getVersion().toString());
+            emit this->extensionInitialized(ext);
+        };
+
+#if LODESTONE_APP_BUILD_JAVA_EXT
+        staticLoader.loadExtension(minecraft::java::LodestoneJava::getInstance());
+#endif
+
+#if LODESTONE_APP_BUILD_LCE_EXT
+        staticLoader.loadExtension(minecraft::console::LodestoneLCE::getInstance());
+#endif
+
+        staticLoader.load();
+#endif
+
         l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {
             std::println("Initializing extension '{}'", p.generic_string());
         };
@@ -105,6 +144,7 @@ namespace lodestone::app {
         l.load();
 
         std::println("Loaded {} extensions", this->m_core->getExtensions().size());
+        std::println("Loaded {} plugins", l.m_extensions.size());
     }
 
     void LodestoneApp::stop() {

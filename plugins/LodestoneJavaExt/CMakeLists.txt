@@ -4,15 +4,15 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 
 set(CMAKE_AUTOMOC ON)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+if (BUILD_SHARED_LIBS)
     qt_add_plugin(Lodestone.App.Java
-            STATIC
+            SHARED
             CLASS_NAME
             LodestoneJavaPlugin
     )
 else()
     qt_add_plugin(Lodestone.App.Java
-            SHARED
+            STATIC
             CLASS_NAME
             LodestoneJavaPlugin
     )

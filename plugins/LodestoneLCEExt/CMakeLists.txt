@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.30)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+if (BUILD_SHARED_LIBS)
     qt_add_plugin(Lodestone.App.LCE
-            STATIC
+            SHARED
             CLASS_NAME
             LodestoneLCEPlugin
     )
 else()
     qt_add_plugin(Lodestone.App.LCE
-            SHARED
+            STATIC
             CLASS_NAME
             LodestoneLCEPlugin
     )

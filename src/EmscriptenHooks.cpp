@@ -9,9 +9,20 @@
  * @license This project is licensed under the LGPL 3.0 license, see the LICENSE file for details.
  */
 
+#include <ostream>
+#include <print>
+
 #include "Lodestone.App/EmscriptenHooks.h"
 
 #include <Lodestone.Core/loader/StaticExtensionLoader.h>
+
+#if LODESTONE_APP_BUILD_JAVA_EXT
+    #include <Lodestone.Minecraft.Java/LodestoneJava.h>
+#endif
+
+#if LODESTONE_APP_BUILD_LCE_EXT
+    #include <Lodestone.Minecraft.Console/LodestoneLce.h>
+#endif
 
 void lodestone::app::EmscriptenHooks::loadStaticExtensions(LodestoneApp *app) {
     auto staticLoader = core::loader::StaticExtensionLoader(app->core());

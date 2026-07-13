@@ -204,6 +204,19 @@ if(EMSCRIPTEN)
                 Lodestone.App.LCE
         )
     endif()
+else()
+    # Link against extensions dynamically
+    if(LODESTONE_APP_BUILD_JAVA_EXT)
+        target_link_libraries(Lodestone.App PRIVATE
+                Lodestone.Minecraft.Java
+        )
+    endif()
+
+    if(LODESTONE_APP_BUILD_LCE_EXT)
+        target_link_libraries(Lodestone.App PRIVATE
+                Lodestone.Minecraft.Console
+        )
+    endif()
 endif()
 
 setupLinter(Lodestone.App)

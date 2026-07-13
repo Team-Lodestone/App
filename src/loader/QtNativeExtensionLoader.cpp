@@ -1,6 +1,13 @@
-//
-// Created by zero on 7/12/26.
-//
+/** @file QtNativeExtensionLoader.cpp
+*
+ * @author Zero_DSRS_VX
+ * @date 7/12/26
+ *
+ * @device PC
+ *
+ * @copyright Copyright (c) 2026 Team Lodestone
+ * @license This project is licensed under the LGPL 3.0 license, see the LICENSE file for details.
+ */
 
 #include "Lodestone.App/loader/QtNativeExtensionLoader.h"
 

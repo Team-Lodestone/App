@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.30)
-project(Lodestone.App.LCE VERSION 1.0.2)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     qt_add_plugin(Lodestone.App.LCE

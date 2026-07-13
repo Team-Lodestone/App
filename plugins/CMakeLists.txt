@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.30)
-project(Lodestone.App.Plugins VERSION 1.0.0)
 
 option(LODESTONE_APP_BUILD_JAVA_EXT "Build Lodestone.App.Java" ON)
 option(LODESTONE_APP_BUILD_LCE_EXT "Build Lodestone.App.LCE" ON)

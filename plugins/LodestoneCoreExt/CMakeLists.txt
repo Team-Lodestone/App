@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.30)
-project(Lodestone.App.Core VERSION 1.0.2)
 
 add_library(Lodestone.App.Core INTERFACE)
 target_sources(Lodestone.App.Core

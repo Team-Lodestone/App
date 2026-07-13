@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.30)
-project(Lodestone.App.Java VERSION 1.0.2)
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
 

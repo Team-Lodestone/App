@@ -21,6 +21,9 @@ public:
     LodestoneJavaPlugin();
 
     ~LodestoneJavaPlugin() override = default;
+
+    QString getIdentifier() const override;
+    QString getVersion() const override;
 };
 
 #endif //LODESTONE_JAVA_PLUGIN_H

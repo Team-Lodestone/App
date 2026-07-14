@@ -12,25 +12,7 @@
 #ifndef LODESTONE_EMSCRIPTEN_HOOKS_H
 #define LODESTONE_EMSCRIPTEN_HOOKS_H
 
-#include <qplugin.h>
-
 #include "Lodestone.App/LodestoneApp.h"
-
-#ifdef __EMSCRIPTEN__
-
-// Import plugins statically
-#if LODESTONE_APP_BUILD_JAVA_EXT
-    #include "Lodestone.Minecraft.Java/LodestoneJava.h"
-    Q_IMPORT_PLUGIN(LodestoneJavaPlugin)
-#endif
-
-#if LODESTONE_APP_BUILD_LCE_EXT
-    #include "Lodestone.Minecraft.Console/LodestoneLce.h"
-    Q_IMPORT_PLUGIN(LodestoneLCEPlugin)
-#endif
-
-#endif
-
 
 namespace lodestone::app {
         class EmscriptenHooks {

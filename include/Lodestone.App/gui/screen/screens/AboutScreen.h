@@ -14,9 +14,9 @@
 
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QGroupBox>
 
-#include "Lodestone.Core/Lodestone.h"
+#include <Lodestone.Core/Lodestone.h>
+#include <LodestoneCoreExt/plugin/LodestoneAppExtension.h>
 
 namespace lodestone::app {
 class LodestoneApp;
@@ -32,10 +32,12 @@ namespace lodestone::app::gui::screen::screens {
 
   public slots:
     void onExtensionRegistered(const lodestone::core::LodestoneExtension *ext) const;
+    void onPluginRegistered(const LodestoneAppExtension *plugin) const;
 
   private:
     QVBoxLayout *m_layout;
     QVBoxLayout *m_registeredExtensions;
+    QVBoxLayout *m_registeredPlugins;
   };
 }
 

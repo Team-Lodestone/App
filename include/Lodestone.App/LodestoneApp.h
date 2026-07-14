@@ -21,6 +21,8 @@
 
 #include <filesystem>
 
+#include <LodestoneCoreExt/plugin/LodestoneAppExtension.h>
+
 #ifdef LODESTONE_APP_MAJOR_VERSION
 #define MAJOR LODESTONE_APP_MAJOR_VERSION
 #else
@@ -74,8 +76,13 @@ namespace lodestone::app {
 
         Options &options() const;
 
+        QString applicationDirPath() const;
+
+        void notifyPluginInitialized(const LodestoneAppExtension *plugin);
+
     signals:
-        void extensionInitialized(const core::LodestoneExtension *extension);
+        void extensionInitialized(const lodestone::core::LodestoneExtension *extension);
+        void pluginInitialized(const LodestoneAppExtension *plugin);
 
     private:
         core::Lodestone *m_core;

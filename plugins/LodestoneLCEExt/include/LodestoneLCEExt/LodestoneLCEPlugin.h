@@ -21,6 +21,9 @@ public:
     LodestoneLCEPlugin();
 
     ~LodestoneLCEPlugin() override = default;
+
+    QString getIdentifier() const override;
+    QString getVersion() const override;
 };
 
 #endif //LODESTONE_LCE_PLUGIN_H

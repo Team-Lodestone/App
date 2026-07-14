@@ -10,9 +10,16 @@
 
 #define LODESTONE_APP_EXTENSION_IID "io.github.team-lodestone/1.0"
 
+namespace lodestone::common::registry {
+    class Identifier;
+}
+
 class LodestoneAppExtension {
 public:
     virtual ~LodestoneAppExtension() = default;
+
+    virtual QString getIdentifier() const = 0;
+    virtual QString getVersion() const = 0;
 };
 
 Q_DECLARE_INTERFACE(LodestoneAppExtension, LODESTONE_APP_EXTENSION_IID);

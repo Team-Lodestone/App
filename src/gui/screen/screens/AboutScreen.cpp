@@ -15,6 +15,7 @@
 #include <QStyle>
 #include <ranges>
 #include <print>
+#include <QGroupBox>
 
 #include "Lodestone.App/LodestoneApp.h"
 #include "Lodestone.App/gui/widgets/TitleWidget.h"
@@ -46,7 +47,15 @@ namespace lodestone::app::gui::screen::screens {
         const auto registeredExtensionsContainer = new QGroupBox("Registered Extensions", this);
         registeredExtensionsContainer->setLayout(this->m_registeredExtensions);
 
+        //REGISTERED PLUGINS INIT
+        this->m_registeredPlugins = new QVBoxLayout();
+        connect(app, &LodestoneApp::pluginInitialized, this, &AboutScreen::onPluginRegistered);
+
+        const auto registeredPluginsContainer = new QGroupBox("Registered Plugins", this);
+        registeredPluginsContainer->setLayout(this->m_registeredPlugins);
+
         this->m_layout->addWidget(registeredExtensionsContainer);
+        this->m_layout->addWidget(registeredPluginsContainer);
 
         //OUTER INIT
         const auto libVersionLabel = new QLabel("libLodestone v" + QString::fromUtf8(lodestone::common::lodestone_get_version_string()));
@@ -67,6 +76,15 @@ namespace lodestone::app::gui::screen::screens {
                 QString::fromStdString(
                     std::format("{} {}", ext->getIdentifier(), ext->getVersion().toString())
                     )
+                )
+            );
+    }
+
+    void AboutScreen::onPluginRegistered(const LodestoneAppExtension *plugin) const {
+        this->m_registeredPlugins->addWidget(
+            new QLabel(
+                QString("%1 %2")
+                .arg(plugin->getIdentifier(), plugin->getVersion())
                 )
             );
     }

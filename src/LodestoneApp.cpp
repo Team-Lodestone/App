@@ -98,7 +98,7 @@ namespace lodestone::app {
     void LodestoneApp::loadExtensions() {
         std::print("== Loading extensions ==\n");
 
-        QtNativeExtensionLoader l(&this->m_application, this->options().extensionsPath, this->m_core);
+        QtNativeExtensionLoader l(this, this->options().extensionsPath, this->m_core);
 
 #ifdef __EMSCRIPTEN__
         EmscriptenHooks::loadStaticExtensions(this);
@@ -131,6 +131,14 @@ namespace lodestone::app {
 
     Options & LodestoneApp::options() const {
         return this->m_optionsManager->options();
+    }
+
+    QString LodestoneApp::applicationDirPath() const {
+        return this->m_application.applicationDirPath();
+    }
+
+    void LodestoneApp::notifyPluginInitialized(const LodestoneAppExtension *plugin) {
+        emit this->pluginInitialized(plugin);
     }
 } // app
 

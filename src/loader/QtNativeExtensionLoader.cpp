@@ -35,6 +35,8 @@ void QtNativeExtensionLoader::load() {
                 pluginId,
                 std::make_pair(std::move(nullptr), extension)
             );
+
+            emit this->m_app->notifyPluginInitialized(extension);
         }
     }
 
@@ -61,6 +63,8 @@ void QtNativeExtensionLoader::load() {
                     pluginId,
                     std::make_pair(std::move(pluginLoader), extension)
                 );
+
+                emit this->m_app->notifyPluginInitialized(extension);
             }
         } else {
             qDebug() << pluginLoader->errorString();

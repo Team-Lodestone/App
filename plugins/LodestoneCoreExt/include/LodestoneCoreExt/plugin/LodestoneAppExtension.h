@@ -1,7 +1,10 @@
-//
-// Created by zero on 7/11/26.
-//
-
+/** @file LodestoneAppExtension.h
+*
+ * @author Zero_DSRS_VX
+ * @date 7/11/26
+ *
+ * @device PC
+ */
 #ifndef LODESTONE_APP_EXTENSION_H
 #define LODESTONE_APP_EXTENSION_H
 #pragma once

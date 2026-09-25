@@ -1,7 +1,10 @@
-//
-// Created by zero on 7/12/26.
-//
-
+/** @file LodestoneLCEPlugin.h
+*
+ * @author Zero_DSRS_VX
+ * @date 7/12/26
+ *
+ * @device PC
+ */
 #ifndef LODESTONE_LCE_PLUGIN_H
 #define LODESTONE_LCE_PLUGIN_H
 #pragma once

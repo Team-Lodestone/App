@@ -1,7 +1,10 @@
-//
-// Created by zero on 7/12/26.
-//
-
+/** @file LodestoneLCEPlugin.cpp
+ *
+ * @author Zero_DSRS_VX
+ * @date 7/12/26
+ *
+ * @device PC
+ */
 #include "LodestoneLCEExt/LodestoneLCEPlugin.h"
 
 LodestoneLCEPlugin::LodestoneLCEPlugin() {

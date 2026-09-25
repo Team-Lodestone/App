@@ -1,7 +1,10 @@
-//
-// Created by zero on 7/11/26.
-//
-
+/** @file LodestoneJavaPlugin.cpp
+*
+ * @author Zero_DSRS_VX
+ * @date 7/11/26
+ *
+ * @device PC
+ */
 #include "LodestoneJavaExt/LodestoneJavaPlugin.h"
 
 LodestoneJavaPlugin::LodestoneJavaPlugin() {

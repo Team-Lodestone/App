@@ -1,0 +1,84 @@
+name: Deploy Project Lodestone App
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+env:
+  LODESTONE_UTILITIES_BUILD_TESTS: OFF
+  THREADING_TYPE: NONE
+  BUILD_SHARED_LIBS: OFF
+  ZLIB_BUILD_STATIC: ON
+  ZLIB_BUILD_SHARED: OFF
+  MZ_PPMD: OFF
+
+jobs:
+  build:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Setup emsdk
+        uses: emscripten-core/setup-emsdk@v15
+        with:
+          version: 5.0.5
+          emsdk-version: 5.0.5
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Check Emscripten
+        run: emcc --version
+
+      - name: Setup Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: 6.12.0
+          target: wasm
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -S . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_STANDARD=23
+
+      - name: Build
+        run: |
+          cmake --build build --config Release --parallel
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare Pages
+        run: |
+          mkdir -p pages
+          cp build/Lodestone.html pages/index.html
+          cp build/Lodestone.js pages/
+          cp build/Lodestone.wasm pages/
+          cp build/qtloader.js pages/
+          cp build/qtlogo.svg pages/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

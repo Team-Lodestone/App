@@ -51,6 +51,7 @@ jobs:
           version: 6.12.0
           target: wasm
           arch: wasm_singlethread
+          cache: true
 
       - name: Check Qt
         run: |
@@ -61,10 +62,11 @@ jobs:
 
       - name: Configure CMake
         run: |
-          qt-cmake -B build \
+          emcmake -B build \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_STANDARD=23
+            -DCMAKE_PREFIX_PATH=/home/runner/work/App/Qt/6.12.0/wasm_singlethread
 
       - name: Build
         run: |

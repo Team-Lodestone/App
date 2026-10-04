@@ -52,9 +52,16 @@ jobs:
           target: wasm
           arch: wasm_singlethread
 
+      - name: Check Qt
+        run: |
+          which emcc
+          emcc --version
+          which qt-cmake || true
+          echo "Qt6_DIR=$Qt6_DIR"
+
       - name: Configure CMake
         run: |
-          cmake -B build \
+          qt-cmake -B build \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_STANDARD=23

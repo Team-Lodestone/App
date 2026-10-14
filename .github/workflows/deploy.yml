@@ -51,8 +51,8 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: 6.12.0
-          target: wasm
-          arch: wasm_singlethread
+          target: desktop
+          arch: gcc_64
           cache: true
 
       - name: Build Qt from source (WASM-shared)

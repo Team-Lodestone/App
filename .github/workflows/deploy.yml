@@ -52,7 +52,7 @@ jobs:
         with:
           version: 6.12.0
           target: desktop
-          arch: gcc_64
+          arch: linux_gcc_64
           cache: true
 
       - name: Build Qt from source (WASM-shared)

@@ -22,6 +22,7 @@ env:
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
+  QT_WASM_ROOT: /home/runner/Qt/6.12.0-wasm-shared
 
 jobs:
   build:
@@ -54,6 +55,39 @@ jobs:
           arch: wasm_singlethread
           cache: true
 
+      - name: Build Qt from source (WASM-shared)
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          QT_VERSION=6.12.0
+          QT_SOURCE="$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION"
+          
+          wget -q "https://download.qt.io/official_releases/qt/6.12/$QT_VERSION/single/qt-everywhere-src-$QT_VERSION.tar.xz" \
+            -O "$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION.tar.xz"
+          
+          mkdir -p "$QT_SOURCE"
+          tar -xf "$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION.tar.xz" \
+            -C "$RUNNER_TEMP"
+          
+          mkdir -p "$QT_WASM_ROOT"
+          cd "$QT_SOURCE"
+          
+          emcmake ./configure \
+            -qt-host-path "/home/runner/Qt/6.12.0/gcc_64" \
+            -platform wasm-emscripten \
+            -prefix "$QT_WASM_ROOT" \
+            -opensource \
+            -confirm-license \
+            -shared \
+            -feature-thread \
+            -submodules qtbase \
+            -nomake examples \
+            -nomake tests
+          
+          cmake --build . --parallel
+          cmake --install .
+
       - name: Check Qt
         run: |
           which emcc
@@ -63,7 +97,7 @@ jobs:
 
       - name: Configure CMake
         run: |
-          emcmake cmake -B build \
+          emcmake cmake --preset qt-wasm-shared-release -B build \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_STANDARD=23 \
@@ -76,7 +110,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build build --config Release --parallel
+          cmake --build build --config Release --preset qt-wasm-shared-release --parallel
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -89,6 +123,7 @@ jobs:
           cp build/Lodestone.wasm pages/
           cp build/qtloader.js pages/
           cp build/qtlogo.svg pages/
+          cp build/Lodestone.data pages/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

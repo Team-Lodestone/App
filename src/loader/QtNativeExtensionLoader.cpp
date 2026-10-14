@@ -20,7 +20,7 @@ void QtNativeExtensionLoader::load() {
     NativeExtensionLoader::load();
 
     // Load statically linked plugins
-    for (const QStaticPlugin &plugin : QPluginLoader::staticPlugins()) {
+    for (const QStaticPlugin &plugin: QPluginLoader::staticPlugins()) {
         QObject *instance = plugin.instance();
 
         if (auto *extension = qobject_cast<LodestoneAppExtension *>(instance)) {
@@ -42,7 +42,13 @@ void QtNativeExtensionLoader::load() {
 
     // Load dynamically linked plugins
     // TODO: Refactor to settings
-    const QDir pluginsDir = this->m_app->applicationDirPath() + "/plugins/";
+#ifdef Q_OS_WASM
+    const QDir pluginsDir(QStringLiteral("/plugins"));
+#else
+    const QDir pluginsDir(
+        this->m_app->applicationDirPath() + "/plugins/"
+    );
+#endif
 
     const auto entryList = pluginsDir.entryList(QDir::Files);
 

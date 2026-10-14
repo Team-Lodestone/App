@@ -33,6 +33,6 @@ target_link_libraries(Lodestone.App.LCE PUBLIC
         Qt6::Core
 )
 
-enable_plugin(Lodestone.App.Java)
+enable_plugin(Lodestone.App.LCE)
 
 setupLinter(Lodestone.App.LCE)

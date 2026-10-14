@@ -13,7 +13,11 @@
 namespace lodestone::app::util {
     // HACK TO GET AROUND https://forum.qt.io/post/812515
     std::filesystem::path Environment::getStorageDirectory() {
+#ifdef Q_OS_WASM
+        return std::filesystem::path("/");
+#else
         return std::filesystem::path(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toUtf8().data()).make_preferred();
+#endif
     }
 
     std::filesystem::path Environment::getConfigDirectory() {

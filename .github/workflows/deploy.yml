@@ -18,6 +18,7 @@ env:
   LODESTONE_UTILITIES_BUILD_TESTS: OFF
   THREADING_TYPE: NONE
   BUILD_SHARED_LIBS: OFF
+  BIO_TESTS: OFF
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
@@ -65,8 +66,13 @@ jobs:
           emcmake cmake -B build \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_CXX_STANDARD=23
-            -DCMAKE_PREFIX_PATH=/home/runner/work/App/Qt/6.12.0/wasm_singlethread
+            -DCMAKE_CXX_STANDARD=23 \
+            -DCMAKE_PREFIX_PATH=/home/runner/work/App/Qt/6.12.0/wasm_singlethread \
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DCMAKE_C_FLAGS="-s USE_ZLIB=1 -pthread" \
+            -DCMAKE_CXX_FLAGS="-s USE_ZLIB=1 -pthread" \
+            -DCMAKE_EXE_LINKER_FLAGS="-s USE_ZLIB=1 -pthread"
 
       - name: Build
         run: |

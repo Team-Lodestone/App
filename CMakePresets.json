@@ -1,0 +1,112 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "qt-wasm-shared-debug",
+      "displayName": "Qt WASM Shared Debug",
+      "description": "Debug build of Project Lodestone for the web",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-emscripten-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
+        "THREADING_TYPE": "std",
+        "BUILD_SHARED_LIBS": "ON",
+        "ZLIB_BUILD_SHARED": "ON",
+        "CMAKE_CXX_FLAGS_DEBUG": "-O0 -g",
+        "CMAKE_EXE_LINKER_FLAGS_DEBUG": "-O0 --closure 0"
+      }
+    },
+    {
+      "name": "qt-wasm-shared-release",
+      "displayName": "Qt WASM Shared Release",
+      "description": "Optimized release build of Project Lodestone for the web",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-emscripten-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
+        "THREADING_TYPE": "std",
+        "BUILD_SHARED_LIBS": "ON",
+        "ZLIB_BUILD_SHARED": "ON",
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+        "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-O3"
+      }
+    },
+
+    {
+      "name": "qt-wasm-static-debug",
+      "displayName": "Qt WASM Static Debug",
+      "description": "Debug build of Project Lodestone for the web",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-emscripten-static-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
+        "THREADING_TYPE": "std",
+        "BUILD_SHARED_LIBS": "OFF",
+        "ZLIB_BUILD_SHARED": "OFF",
+        "ZLIB_BUILD_STATIC": "ON",
+        "MZ_PPMD": "OFF",
+        "CMAKE_CXX_FLAGS_DEBUG": "-O0 -g",
+        "CMAKE_EXE_LINKER_FLAGS_DEBUG": "-O0 --closure 0"
+      }
+    },
+    {
+      "name": "qt-wasm-static-release",
+      "displayName": "Qt WASM Shared Release",
+      "description": "Optimized release build of Project Lodestone for the web",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-emscripten-static-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
+        "BUILD_SHARED_LIBS": "OFF",
+        "ZLIB_BUILD_SHARED": "OFF",
+        "ZLIB_BUILD_STATIC": "ON",
+        "MZ_PPMD": "OFF",
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+        "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-O3"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "qt-wasm-shared-debug",
+      "displayName": "Qt WASM Shared Debug Build",
+      "configurePreset": "qt-wasm-shared-debug",
+      "jobs": 0
+    },
+    {
+      "name": "qt-wasm-shared-release",
+      "displayName": "Qt WASM Shared Release Build",
+      "configurePreset": "qt-wasm-shared-release",
+      "jobs": 0
+    },
+    {
+      "name": "qt-wasm-static-debug",
+      "displayName": "Qt WASM Static Debug Build",
+      "configurePreset": "qt-wasm-static-debug",
+      "jobs": 0
+    },
+    {
+      "name": "qt-wasm-static-release",
+      "displayName": "Qt WASM Static Release Build",
+      "configurePreset": "qt-wasm-static-release",
+      "jobs": 0
+    }
+  ]
+}

@@ -56,23 +56,36 @@ if(EMSCRIPTEN)
             QT_PLUGINS "platforms;imageformats"
     )
 
-    # TODO: Export only necessary functions to reduce binary size
-#    target_link_options(Lodestone.App PRIVATE
-#            "-sMAIN_MODULE=1"
-#            "-sEXPORT_ALL=1"
-#            "-sALLOW_TABLE_GROWTH=1"
-#            "-sSTRICT_JS=0"
-#            "-sDEFAULT_TO_CXX=1"
-#            "-sERROR_ON_UNDEFINED_SYMBOLS=0"
-#            "-sEXPORTED_FUNCTIONS=['__ZN18JsMediaInputStream21mediaVideoStreamReadyEv','_main']"
-#
-#            "-sALLOW_MEMORY_GROWTH=1"
-#            "-sINITIAL_MEMORY=8589934592"
-#
-#            #            "-Wl,--allow-multiple-definition"
-##            "-sWARN_ON_UNDEFINED_SYMBOLS=0"
-##            "-sERROR_ON_UNDEFINED_SYMBOLS=0"
-#    )
+    if (BUILD_SHARED_LIBS)
+        target_compile_options(Lodestone.App PRIVATE
+                "-pthread"
+        )
+
+        target_link_options(Lodestone.App PRIVATE
+                "-pthread"
+                "-sPTHREAD_POOL_SIZE=4"
+                "-sPTHREAD_POOL_DELAY_LOAD=1"
+
+                "-sMAIN_MODULE=2"
+                "-sEXPORT_ALL=1"
+                "-sALLOW_TABLE_GROWTH=1"
+                "-sSTRICT_JS=0"
+                "-sDEFAULT_TO_CXX=1"
+                "-sERROR_ON_UNDEFINED_SYMBOLS=0"
+
+                "-sEXPORT_ES6=0"
+                "-sMODULARIZE=0"
+
+                "-sSHARED_MEMORY=1"
+                "-sALLOW_MEMORY_GROWTH=1"
+                "-sINITIAL_MEMORY=2147483648"
+
+                "-Wl,--allow-multiple-definition"
+                "-sWARN_ON_UNDEFINED_SYMBOLS=0"
+                "-sERROR_ON_UNDEFINED_SYMBOLS=0"
+                "-sNO_DISABLE_EXCEPTION_CATCHING"
+        )
+    endif()
 endif()
 
 target_include_directories(Lodestone.App
@@ -138,9 +151,14 @@ if (WIN32)
     )
 endif ()
 
+target_compile_definitions(Lodestone.App PRIVATE
+        $<$<BOOL:${BUILD_SHARED_LIBS}>:BUILD_SHARED_LIBS>
+)
+
 target_link_libraries(Lodestone.App PUBLIC
         Lodestone.App.Core
         Lodestone.Level
+        Lodestone.Common
         Lodestone.Core
         Lodestone.Conversion
         nbt++
@@ -151,6 +169,10 @@ target_link_libraries(Lodestone.App PUBLIC
         Qt6::Gui
         Qt6::Widgets
         Qt6::Concurrent
+)
+target_link_options(Lodestone.App PRIVATE
+        "-L${CMAKE_BINARY_DIR}/libLodestone/projects/Libraries/Common"
+        "-L${CMAKE_BINARY_DIR}/libLodestone/projects/Libraries/Level"
 )
 if (NOT EMSCRIPTEN)
     target_link_libraries(Lodestone.App PUBLIC
@@ -182,28 +204,29 @@ if(EMSCRIPTEN)
     target_link_options(Lodestone.App PRIVATE
             -gsource-map
     )
+    if (NOT BUILD_SHARED_LIBS)
+        if (LODESTONE_APP_BUILD_JAVA_EXT)
+            #        target_link_libraries(Lodestone.App PRIVATE
+            #                "-Wl,--whole-archive"
+            #                Lodestone.App.Java
+            #                "-Wl,--no-whole-archive"
+            #        )
+            target_link_libraries(Lodestone.App PRIVATE
+                    Lodestone.App.Java
+            )
+        endif ()
 
-    if(LODESTONE_APP_BUILD_JAVA_EXT)
-#        target_link_libraries(Lodestone.App PRIVATE
-#                "-Wl,--whole-archive"
-#                Lodestone.App.Java
-#                "-Wl,--no-whole-archive"
-#        )
-        target_link_libraries(Lodestone.App PRIVATE
-            Lodestone.App.Java
-        )
-    endif()
-
-    if(LODESTONE_APP_BUILD_LCE_EXT)
-#        target_link_libraries(Lodestone.App PRIVATE
-#                "-Wl,--whole-archive"
-#                Lodestone.App.LCE
-#                "-Wl,--no-whole-archive"
-#        )
-        target_link_libraries(Lodestone.App PRIVATE
-                Lodestone.App.LCE
-        )
-    endif()
+        if (LODESTONE_APP_BUILD_LCE_EXT)
+            #        target_link_libraries(Lodestone.App PRIVATE
+            #                "-Wl,--whole-archive"
+            #                Lodestone.App.LCE
+            #                "-Wl,--no-whole-archive"
+            #        )
+            target_link_libraries(Lodestone.App PRIVATE
+                    Lodestone.App.LCE
+            )
+        endif ()
+    endif ()
 else()
     # Link against extensions dynamically
     if(LODESTONE_APP_BUILD_JAVA_EXT)
@@ -217,6 +240,14 @@ else()
                 Lodestone.Minecraft.Console
         )
     endif()
+endif()
+
+if(EMSCRIPTEN)
+    qt_generate_deploy_app_script(
+        TARGET Lodestone.App
+        OUTPUT_SCRIPT deploy_script
+        NO_UNSUPPORTED_PLATFORM_ERROR
+    )
 endif()
 
 setupLinter(Lodestone.App)

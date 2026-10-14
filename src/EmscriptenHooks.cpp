@@ -16,12 +16,16 @@
 
 #include <Lodestone.Core/loader/StaticExtensionLoader.h>
 
+#ifdef __EMSCRIPTEN__
+#ifndef BUILD_SHARED_LIBS
 #if LODESTONE_APP_BUILD_JAVA_EXT
     #include <Lodestone.Minecraft.Java/LodestoneJava.h>
 #endif
 
 #if LODESTONE_APP_BUILD_LCE_EXT
     #include <Lodestone.Minecraft.Console/LodestoneLce.h>
+#endif
+#endif
 #endif
 
 void lodestone::app::EmscriptenHooks::loadStaticExtensions(LodestoneApp *app) {
@@ -36,12 +40,14 @@ void lodestone::app::EmscriptenHooks::loadStaticExtensions(LodestoneApp *app) {
         emit app->extensionInitialized(ext);
     };
 
+#ifndef BUILD_SHARED_LIBS
 #if LODESTONE_APP_BUILD_JAVA_EXT
     staticLoader.loadExtension(minecraft::java::LodestoneJava::getInstance());
 #endif
 
 #if LODESTONE_APP_BUILD_LCE_EXT
     staticLoader.loadExtension(minecraft::console::LodestoneLCE::getInstance());
+#endif
 #endif
 
     staticLoader.load();

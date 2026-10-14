@@ -17,20 +17,21 @@
 #include <string>
 
 #include <BinaryIO/Exports.h>
-#include "Lodestone.Core/loader/ExtensionLoader.h"
 #include "Lodestone.Common/LodestoneCommon.h"
 #include "Lodestone.Common/event/Cancellable.h"
+#include "Lodestone.Core/loader/ExtensionLoader.h"
 
-#include <QMouseEvent>
 #include <QFile>
-#include <fstream>
+#include <QMouseEvent>
+#include <QStyleFactory>
 
-#include "Lodestone.App/EmscriptenHooks.h"
 #include "Lodestone.App/loader/QtNativeExtensionLoader.h"
 
 #ifdef __EMSCRIPTEN__
+#ifndef BUILD_SHARED_LIBS
     // ReSharper disable once CppUnusedIncludeDirective
     #include "Lodestone.App/EmscriptenHooks.h"
+#endif
 #endif
 
 namespace lodestone::app {
@@ -101,7 +102,9 @@ namespace lodestone::app {
         QtNativeExtensionLoader l(this, this->options().extensionsPath, this->m_core);
 
 #ifdef __EMSCRIPTEN__
+#ifndef BUILD_SHARED_LIBS
         EmscriptenHooks::loadStaticExtensions(this);
+#endif
 #endif
 
         l.extensionLoadingEvent += [](common::event::Cancellable &/*cancellable*/, const std::filesystem::path &p) {

@@ -22,7 +22,7 @@ env:
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
-  QT_WASM_ROOT: /home/runner/Qt/6.12.0-wasm
+  QT_WASM_ROOT: $GITHUB_WORKSPACE/Qt/6.12.0/wasm_singlethread
 
 jobs:
   build:
@@ -50,63 +50,12 @@ jobs:
       - name: Setup Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: 6.12.0
-          target: desktop
-          arch: linux_gcc_64
+          aqtversion: '==3.3.*'
+          version: '6.12.0'
+          host: 'all_os'
+          target: 'wasm'
+          arch: 'wasm_singlethread'
           cache: true
-
-      - name: Verify host Qt
-        shell: bash
-        run: |
-          set -euxo pipefail
-
-          QT_HOST_PATH="$QT_ROOT_DIR"
-
-          test -d "$QT_HOST_PATH"
-          test -f "$QT_HOST_PATH/lib/cmake/Qt6/Qt6Config.cmake"
-          test -x "$QT_HOST_PATH/bin/moc"
-          test -x "$QT_HOST_PATH/bin/rcc"
-
-          echo "Host Qt installation verified: $QT_HOST_PATH"
-
-      - name: Build Qt from source (WASM-shared)
-        shell: bash
-        run: |
-          set -euo pipefail
-          
-          QT_VERSION=6.12.0
-          QT_SOURCE="$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION"
-          
-          wget -q "https://download.qt.io/official_releases/qt/6.12/$QT_VERSION/single/qt-everywhere-src-$QT_VERSION.tar.xz" \
-            -O "$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION.tar.xz"
-          
-          mkdir -p "$QT_SOURCE"
-          tar -xf "$RUNNER_TEMP/qt-everywhere-src-$QT_VERSION.tar.xz" \
-            -C "$RUNNER_TEMP"
-          
-          mkdir -p "$QT_WASM_ROOT"
-          cd "$QT_SOURCE"
-          
-          emcmake ./configure \
-            -qt-host-path "$QT_ROOT_DIR" \
-            -platform wasm-emscripten \
-            -prefix "$QT_WASM_ROOT" \
-            -opensource \
-            -confirm-license \
-            -feature-thread \
-            -submodules qtbase \
-            -nomake examples \
-            -nomake tests
-          
-          cmake --build . --parallel
-          cmake --install .
-
-      - name: Check Qt
-        run: |
-          which emcc
-          emcc --version
-          which qt-cmake || true
-          echo "Qt6_DIR=$Qt6_DIR"
 
       - name: Configure CMake
         run: |

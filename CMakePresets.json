@@ -15,7 +15,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
-        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6",
         "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
         "THREADING_TYPE": "std",
         "BUILD_SHARED_LIBS": "ON",
@@ -33,7 +33,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
-        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6",
         "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
         "THREADING_TYPE": "std",
         "BUILD_SHARED_LIBS": "ON",
@@ -52,7 +52,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
-        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6",
         "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
         "THREADING_TYPE": "std",
         "BUILD_SHARED_LIBS": "OFF",
@@ -72,7 +72,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_TOOLCHAIN_FILE": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6/qt.toolchain.cmake",
-        "Qt6_DIR": "$penv{QT_WASM_ROOT}",
+        "Qt6_DIR": "$penv{QT_WASM_ROOT}/lib/cmake/Qt6",
         "LODESTONE_UTILITIES_BUILD_TESTS": "OFF",
         "BUILD_SHARED_LIBS": "OFF",
         "ZLIB_BUILD_SHARED": "OFF",

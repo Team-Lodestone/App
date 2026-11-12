@@ -22,7 +22,7 @@ env:
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
-  QT_WASM_ROOT: $GITHUB_WORKSPACE/Qt/6.12.0/wasm_singlethread
+  QT_WASM_ROOT: ${{ github.workspace }}/QT_WASM_ROOT/Qt/6.12.0/wasm_singlethread
 
 jobs:
   build:

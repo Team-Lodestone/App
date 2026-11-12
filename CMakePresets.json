@@ -65,7 +65,7 @@
     },
     {
       "name": "qt-wasm-static-release",
-      "displayName": "Qt WASM Shared Release",
+      "displayName": "Qt WASM Static Release",
       "description": "Optimized release build of Project Lodestone for the web",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/cmake-build-emscripten-static-release",

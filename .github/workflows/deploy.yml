@@ -22,7 +22,7 @@ env:
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
-  QT_WASM_ROOT: /home/runner/Qt/6.12.0-wasm-shared
+  QT_WASM_ROOT: /home/runner/Qt/6.12.0-wasm
 
 jobs:
   build:
@@ -55,6 +55,23 @@ jobs:
           arch: linux_gcc_64
           cache: true
 
+      - name: Verify host Qt
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          echo "QT_ROOT_DIR=${QT_ROOT_DIR:-unset}"
+          echo "Qt6_DIR=${Qt6_DIR:-unset}"
+
+          QT_HOST_PATH="/home/runner/Qt/6.12.0/gcc_64"
+
+          test -d "$QT_HOST_PATH"
+          test -f "$QT_HOST_PATH/lib/cmake/Qt6/Qt6Config.cmake"
+          test -x "$QT_HOST_PATH/bin/moc"
+          test -x "$QT_HOST_PATH/bin/rcc"
+
+          echo "Host Qt installation verified."
+
       - name: Build Qt from source (WASM-shared)
         shell: bash
         run: |
@@ -79,7 +96,6 @@ jobs:
             -prefix "$QT_WASM_ROOT" \
             -opensource \
             -confirm-license \
-            -shared \
             -feature-thread \
             -submodules qtbase \
             -nomake examples \
@@ -97,20 +113,20 @@ jobs:
 
       - name: Configure CMake
         run: |
-          emcmake cmake --preset qt-wasm-shared-release -B build \
+          emcmake cmake --preset qt-wasm-static-release -B build \
             -S . \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_STANDARD=23 \
-            -DCMAKE_PREFIX_PATH=/home/runner/work/App/Qt/6.12.0/wasm_singlethread \
+            -DCMAKE_PREFIX_PATH="$QT_WASM_ROOT" \
             -DCMAKE_CXX_STANDARD_REQUIRED=ON \
             -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-            -DCMAKE_C_FLAGS="-s USE_ZLIB=1 -pthread" \
-            -DCMAKE_CXX_FLAGS="-s USE_ZLIB=1 -pthread" \
-            -DCMAKE_EXE_LINKER_FLAGS="-s USE_ZLIB=1 -pthread"
+            -DCMAKE_C_FLAGS="-s USE_ZLIB=1" \
+            -DCMAKE_CXX_FLAGS="-s USE_ZLIB=1" \
+            -DCMAKE_EXE_LINKER_FLAGS="-s USE_ZLIB=1"
 
       - name: Build
         run: |
-          cmake --build build --config Release --preset qt-wasm-shared-release --parallel
+          cmake --build build --config Release --preset qt-wasm-static-release --parallel
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

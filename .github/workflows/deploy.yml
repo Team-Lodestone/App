@@ -50,6 +50,7 @@ jobs:
       - name: Setup Qt
         uses: jurplel/install-qt-action@v4
         with:
+          dir: QT_WASM_ROOT
           aqtversion: '==3.3.*'
           version: '6.12.0'
           host: 'all_os'

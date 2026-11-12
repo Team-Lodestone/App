@@ -60,17 +60,14 @@ jobs:
         run: |
           set -euxo pipefail
 
-          echo "QT_ROOT_DIR=${QT_ROOT_DIR:-unset}"
-          echo "Qt6_DIR=${Qt6_DIR:-unset}"
-
-          QT_HOST_PATH="/home/runner/Qt/6.12.0/gcc_64"
+          QT_HOST_PATH="$QT_ROOT_DIR"
 
           test -d "$QT_HOST_PATH"
           test -f "$QT_HOST_PATH/lib/cmake/Qt6/Qt6Config.cmake"
           test -x "$QT_HOST_PATH/bin/moc"
           test -x "$QT_HOST_PATH/bin/rcc"
 
-          echo "Host Qt installation verified."
+          echo "Host Qt installation verified: $QT_HOST_PATH"
 
       - name: Build Qt from source (WASM-shared)
         shell: bash
@@ -91,7 +88,7 @@ jobs:
           cd "$QT_SOURCE"
           
           emcmake ./configure \
-            -qt-host-path "/home/runner/Qt/6.12.0/gcc_64" \
+            -qt-host-path "$QT_ROOT_DIR" \
             -platform wasm-emscripten \
             -prefix "$QT_WASM_ROOT" \
             -opensource \

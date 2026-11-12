@@ -22,10 +22,14 @@ env:
   ZLIB_BUILD_STATIC: ON
   ZLIB_BUILD_SHARED: OFF
   MZ_PPMD: OFF
-  QT_WASM_ROOT: ${{ github.workspace }}/QT_WASM_ROOT/Qt/6.12.0/wasm_singlethread
+  QT_WASM_ROOT: ${{ github.workspace }}/Qt/6.12.0/wasm_singlethread
 
 jobs:
   build:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+        contains(github.event.head_commit.message, 'ci:') ||
+        contains(github.event.head_commit.message, 'deploy:')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -47,21 +51,32 @@ jobs:
       - name: Check Emscripten
         run: emcc --version
 
-      - name: Setup Qt
+      - name: Setup Qt (host)
         uses: jurplel/install-qt-action@v4
         with:
-          dir: QT_WASM_ROOT
-          aqtversion: '==3.3.*'
+            dir: ${{ github.workspace }}
+            version: '6.12.0'
+            host: linux
+            target: desktop
+            arch: linux_gcc_64
+            cache: true
+
+      - name: Setup Qt (WASM)
+        uses: jurplel/install-qt-action@v4
+        with:
+          dir: ${{ github.workspace }}
           version: '6.12.0'
-          host: 'all_os'
-          target: 'wasm'
-          arch: 'wasm_singlethread'
+          host: all_os
+          target: wasm
+          arch: wasm_singlethread
+          set-env: false
           cache: true
 
       - name: Configure CMake
         run: |
-          emcmake cmake --preset qt-wasm-static-release -B build \
+          "$QT_WASM_ROOT/bin/qt-cmake" --preset qt-wasm-static-release -B build \
             -S . \
+            -DQT_HOST_PATH="${{ github.workspace }}/Qt/6.12.0/gcc_64"
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_STANDARD=23 \
             -DCMAKE_PREFIX_PATH="$QT_WASM_ROOT" \

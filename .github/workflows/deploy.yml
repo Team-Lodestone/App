@@ -106,7 +106,7 @@ jobs:
           cp build/Lodestone.wasm pages/
           cp build/qtloader.js pages/
           cp build/qtlogo.svg pages/
-          cp build/Lodestone.data pages/
+          [ -f build/Lodestone.data ] && cp build/Lodestone.data pages/ || true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
